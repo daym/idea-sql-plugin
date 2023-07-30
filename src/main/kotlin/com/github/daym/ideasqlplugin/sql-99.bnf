@@ -11,6 +11,27 @@
   elementTypeHolderClass="com.github.daym.ideasqlplugin.language.psi.SqlTypes"
   elementTypeClass="com.github.daym.ideasqlplugin.language.psi.SqlElementType"
   tokenTypeClass="com.github.daym.ideasqlplugin.language.psi.SqlTokenType"
+  tokens=[
+    space='regexp:\s+'
+    white_space='regexp:\s+'
+    bracketed_comment_introducer='regexp:/[*]'
+    bracketed_comment_terminator='regexp:[*]/'
+    // TODO: More detail (see LEX)
+    identifier_body='regexp:\p{Alpha}\w*'
+    // TODO: More detail
+    nonquote_character='regexp:[a-zA-Z _-]+'
+    // FIXME
+    newline='\n'
+    // TODO: comment='regexp:--.*'
+    // TODO: string="regexp:('([^'\\]|\\.)*'|\"([^\"\\]|\\.)*\")"
+    // TODO: number='regexp:\d+(\.\d*)?'
+
+    // TODO: op_1 = '+'
+    // TODO: op_2 = '-'
+    // TODO: op_3 = '*'
+    // TODO: op_4 = '/'
+    // TODO: op_5 = '!'
+  ]
 }
 
 root ::= directly_executable_statement  'GO' *
@@ -200,7 +221,6 @@ SQL_special_character ::=
 	|	left_brace
 	|	right_brace
 
-space ::= ' ' //  'FIXME' !! (See the Syntax Rules)
 double_quote ::= '"'
 percent ::= '%'
 ampersand ::= '&'
@@ -260,7 +280,7 @@ regular_identifier ::= identifier_body
 
 //p
 //small
-//i identifier_body modified per  'ISO' 9075:1999/Cor.1:2000(E).
+//i identifier_body modified per  ISO 9075:1999/Cor.1:2000(E).
 ///i
 ///p
 //p
@@ -272,60 +292,7 @@ regular_identifier ::= identifier_body
 ///small
 ///p
 
-identifier_body ::= identifier_start [ identifier_part * ]
-
-identifier_start ::= initial_alphabetic_character | ideographic_character
-
-initial_alphabetic_character ::= !! (See the Syntax Rules)
-
-ideographic_character ::= !! (See the Syntax Rules)
-
-identifier_part ::=
-		alphabetic_character
-	|	ideographic_character
-	|	decimal_digit_character
-	|	identifier_combining_character
-	|	underscore
-	|	alternate_underscore
-	|	extender_character
-	|	identifier_ignorable_character
-	|	connector_character
-
-alphabetic_character ::= !! (See the Syntax Rules)
-
-decimal_digit_character ::= !! (See the Syntax Rules)
-
-identifier_combining_character ::= !! (See the Syntax Rules)
-
-alternate_underscore ::= !! (See the Syntax Rules)
-
-extender_character ::= !! (See the Syntax Rules)
-
-identifier_ignorable_character ::= !! (See the Syntax Rules)
-
-connector_character ::= !! (See the Syntax Rules)
-
-delimited_identifier ::= double_quote delimited_identifier_body double_quote
-
-delimited_identifier_body ::= delimited_identifier_part*
-
-delimited_identifier_part ::= nondoublequote_character | doublequote_symbol
-
-nondoublequote_character ::= !! (See the Syntax Rules)
-
-//p
-//small
-//i
-Note that the two successive double quote characters must have no other
-character (such as a space) between them.
-The lexical analyzer would normally deal with this sort of issue.
-///i
-///small
-///p
-
-doublequote_symbol ::= double_quote double_quote
-
-module_character_set_specification ::=  'NAMES' ARE character_set_specification
+module_character_set_specification ::= 'NAMES' 'ARE' character_set_specification
 
 character_set_specification ::=
 		standard_character_set_name
@@ -660,8 +627,6 @@ introducer ::= underscore
 
 character_representation ::= nonquote_character | quote_symbol
 
-nonquote_character ::= !! (See the Syntax Rules.)
-
 //p
 //small
 //i
@@ -685,14 +650,12 @@ simple_comment_introducer ::= minus_sign minus_sign [ minus_sign* ]
 
 comment_character ::= nonquote_character | quote
 
-newline ::= !! (See the Syntax Rules)
-
 //p
 //small
 //i
-The bracketed_comment rule included '!! (See the Syntax Rules)'.
-This probably says something about the slash asterisk and asterisk
-slash needing to be adjacent characters rather than adjacent tokens.
+//The bracketed_comment rule included '!! (See the Syntax Rules)'.
+//This probably says something about the slash asterisk and asterisk
+//slash needing to be adjacent characters rather than adjacent tokens.
 ///i
 ///small
 ///p
@@ -700,13 +663,7 @@ slash needing to be adjacent characters rather than adjacent tokens.
 bracketed_comment ::=
 		bracketed_comment_introducer bracketed_comment_contents bracketed_comment_terminator
 
-bracketed_comment_introducer ::= slash asterisk
-
 bracketed_comment_contents ::= [ { comment_character | separator }* ]
-
-bracketed_comment_terminator ::= asterisk slash
-
-white_space ::= !! (See the Syntax Rules)
 
 national_character_string_literal ::=
 		N quote [ character_representation* ] quote
@@ -1712,42 +1669,42 @@ similar_pattern ::= character_value_expression
 //text.
 ///p
 
-regular_expression ::=
-		regular_term
-	|	regular_expression vertical_bar regular_term
-
-regular_term ::=
-		regular_factor
-	|	regular_term regular_factor
-
-regular_factor ::=
-		regular_primary
-	|	regular_primary asterisk
-	|	regular_primary plus_sign
-
-regular_primary ::=
-		character_specifier
-	|	percent
-	|	regular_character_set
-	|	left_paren regular_expression right_paren
-
-character_specifier ::= non-escaped_character | escaped_character
-
-non-escaped_character ::= !! (See the Syntax Rules)
-
-escaped_character ::= !! (See the Syntax Rules)
-
-regular_character_set ::=
-		underscore
-	|	left_bracket character_enumeration* right_bracket
-	|	left_bracket circumflex character_enumeration* right_bracket
-	|	left_bracket colon regular_character_set_identifier colon right_bracket
-
-character_enumeration ::=
-		character_specifier
-	|	character_specifier minus_sign character_specifier
-
-regular_character_set_identifier ::= identifier
+//regular_expression ::=
+//		regular_term
+//	|	regular_expression vertical_bar regular_term
+//
+//regular_term ::=
+//		regular_factor
+//	|	regular_term regular_factor
+//
+//regular_factor ::=
+//		regular_primary
+//	|	regular_primary asterisk
+//	|	regular_primary plus_sign
+//
+//regular_primary ::=
+//		character_specifier
+//	|	percent
+//	|	regular_character_set
+//	|	left_paren regular_expression right_paren
+//
+//character_specifier ::= non-escaped_character | escaped_character
+//
+//non-escaped_character ::= !! (See the Syntax Rules)
+//
+//escaped_character ::= !! (See the Syntax Rules)
+//
+//regular_character_set ::=
+//		underscore
+//	|	left_bracket character_enumeration* right_bracket
+//	|	left_bracket circumflex character_enumeration* right_bracket
+//	|	left_bracket colon regular_character_set_identifier colon right_bracket
+//
+//character_enumeration ::=
+//		character_specifier
+//	|	character_specifier minus_sign character_specifier
+//
+//regular_character_set_identifier ::= identifier
 
 //hr
 
