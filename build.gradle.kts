@@ -4,6 +4,15 @@ import org.jetbrains.changelog.markdownToHTML
 fun properties(key: String) = providers.gradleProperty(key)
 fun environment(key: String) = providers.environmentVariable(key)
 
+java {
+    toolchain {
+////        languageVersion.set(JavaLanguageVersion.of(JavaVersion.VERSION_17.toString()))
+////        //vendor.set(determineJvmVendor(defaultFallbackSpec = JvmVendorSpec.ADOPTOPENJDK))
+          languageVersion.set(JavaLanguageVersion.of(17))
+          vendor.set(JvmVendorSpec.matching("JetBrains s.r.o"))
+    }
+}
+
 plugins {
     id("java") // Java support
     alias(libs.plugins.kotlin) // Kotlin support
@@ -125,3 +134,5 @@ tasks {
         channels = properties("pluginVersion").map { listOf(it.split('-').getOrElse(1) { "default" }.split('.').first()) }
     }
 }
+
+sourceSets["main"].java.srcDirs("src/main/gen")

@@ -11,6 +11,13 @@
     <extensions defaultExtensionNs="com.intellij">
         <toolWindow factoryClass="com.github.daym.ideasqlplugin.toolWindow.MyToolWindowFactory" id="MyToolWindow"/>
     </extensions>
+    <extensions defaultExtensionNs="com.intellij">
+        <fileType name="SQL File"
+                  implementationClass="com.github.daym.ideasqlplugin.SqlFileType"
+                  fieldName="INSTANCE"
+                  language="Sql"
+                  extensions="sql"/>
+    </extensions>
 
     <applicationListeners>
         <listener class="com.github.daym.ideasqlplugin.listeners.MyApplicationActivationListener" topic="com.intellij.openapi.application.ApplicationActivationListener"/>
