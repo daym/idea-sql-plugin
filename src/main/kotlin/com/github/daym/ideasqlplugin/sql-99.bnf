@@ -66,7 +66,7 @@ J1992 ::= '2' | 'edition1992' left_paren '2' right_paren
 
 J1999 ::= '3' | 'edition1999' left_paren '3' right_paren
 
-SQL_conformance ::= level parts // FIXME packages
+SQL_conformance ::= level parts // 'FIXME' packages
 
 level ::= low | intermediate | high
 
@@ -76,7 +76,7 @@ intermediate ::= '1' | 'Intermediate' left_paren '1' right_paren
 
 high ::= '2' | 'High' left_paren '2' right_paren
 
-parts ::= // FIXME Part_3 Part_4 Part_5 Part_6 Part_7 Part_8 Part_9 Part_10
+parts ::= // 'FIXME' Part_3 Part_4 Part_5 Part_6 Part_7 Part_8 Part_9 Part_10
 
 //p
 //small
@@ -280,7 +280,7 @@ regular_identifier ::= identifier_body
 
 //p
 //small
-//i identifier_body modified per  ISO 9075:1999/Cor.1:2000(E).
+//i identifier_body modified per  'ISO' 9075:1999/Cor.1:2000(E).
 ///i
 ///p
 //p
@@ -356,7 +356,7 @@ group_name ::= identifier
 
 multiple_group_specification ::= group_specification [ { comma group_specification }* ]
 
-group_specification ::= group_name  'FOR' TYPE user-defined_type
+group_specification ::= group_name  'FOR' 'TYPE' user-defined_type
 
 user-defined_type ::= user-defined_type_name
 
@@ -367,9 +367,9 @@ schema_qualified_type_name ::= [ schema_name period ] qualified_identifier
 qualified_identifier ::= identifier
 
 temporary_table_declaration ::=
-	 	'DECLARE'  'LOCAL' TEMPORARY  'TABLE' table_name
+	 	'DECLARE'  'LOCAL' 'TEMPORARY'  'TABLE' table_name
 		table_element_list
-		[  'ON' COMMIT table_commit_action  'ROWS' ]
+		[  'ON' 'COMMIT' table_commit_action  'ROWS' ]
 
 table_name ::= local_or_schema_qualified_name
 
@@ -409,7 +409,7 @@ data_type ::=
 	|	collection_type
 
 predefined_type ::=
-		character_string_type [  'CHARACTER' SET character_set_specification ]
+		character_string_type [  'CHARACTER' 'SET' character_set_specification ]
 	|	national_character_string_type
 	|	binary_large_object_string_type
 	|	bit_string_type
@@ -424,33 +424,33 @@ character_string_type ::=
 	| 	'CHARACTER'  'VARYING' left_paren length right_paren
 	| 	'CHAR'  'VARYING' left_paren length right_paren
 	| 	'VARCHAR' left_paren length right_paren
-	| 	'CHARACTER'  'LARGE' OBJECT [ left_paren large_object_length right_paren ]
-	| 	'CHAR'  'LARGE' OBJECT [ left_paren large_object_length right_paren ]
+	| 	'CHARACTER'  'LARGE' 'OBJECT' [ left_paren large_object_length right_paren ]
+	| 	'CHAR'  'LARGE' 'OBJECT' [ left_paren large_object_length right_paren ]
 	| 	'CLOB' [ left_paren large_object_length right_paren ]
 
 length ::= unsigned_integer
 
-unsigned_integer ::= digit*
+unsigned_integer ::= digit digit*
 
 large_object_length ::= unsigned_integer [ multiplier ] | large_object_length_token
 
-multiplier ::= K | M | G
+multiplier ::= 'K' | 'M' | 'G'
 
-large_object_length_token ::= digit* multiplier
+large_object_length_token ::= digit digit* multiplier
 
 national_character_string_type ::=
 	 	'NATIONAL'  'CHARACTER' [ left_paren length right_paren ]
 	| 	'NATIONAL'  'CHAR' [ left_paren length right_paren ]
 	| 	'NCHAR' [ left_paren length right_paren ]
-	| 	'NATIONAL'  'CHARACTER' VARYING left_paren length right_paren
-	| 	'NATIONAL'  'CHAR' VARYING left_paren length right_paren
+	| 	'NATIONAL'  'CHARACTER' 'VARYING' left_paren length right_paren
+	| 	'NATIONAL'  'CHAR' 'VARYING' left_paren length right_paren
 	| 	'NCHAR'  'VARYING' left_paren length right_paren
-	| 	'NATIONAL'  'CHARACTER' LARGE  'OBJECT' [ left_paren large_object_length right_paren ]
-	| 	'NCHAR'  'LARGE' OBJECT [ left_paren large_object_length right_paren ]
+	| 	'NATIONAL'  'CHARACTER' 'LARGE'  'OBJECT' [ left_paren large_object_length right_paren ]
+	| 	'NCHAR'  'LARGE' 'OBJECT' [ left_paren large_object_length right_paren ]
 	| 	'NCLOB' [ left_paren large_object_length right_paren ]
 
 binary_large_object_string_type ::=
-	 	'BINARY'  'LARGE' OBJECT [ left_paren large_object_length right_paren ]
+	 	'BINARY'  'LARGE' 'OBJECT' [ left_paren large_object_length right_paren ]
 	| 	'BLOB' [ left_paren large_object_length right_paren ]
 
 bit_string_type ::=
@@ -487,7 +487,7 @@ time_precision ::= time_fractional_seconds_precision
 
 time_fractional_seconds_precision ::= unsigned_integer
 
-with_or_without_time_zone ::=  'WITH' TIME  'ZONE' |  'WITHOUT' TIME  'ZONE'
+with_or_without_time_zone ::=  'WITH' 'TIME'  'ZONE' |  'WITHOUT' 'TIME'  'ZONE'
 
 timestamp_precision ::= time_fractional_seconds_precision
 
@@ -521,7 +521,7 @@ field_definition ::= field_name data_type [ reference_scope_check ] [ collate_cl
 field_name ::= identifier
 
 reference_scope_check ::=
-	 	'REFERENCES'  'ARE' [  'NOT' ]  'CHECKED' [  'ON' DELETE reference_scope_check_action ]
+	 	'REFERENCES'  'ARE' [  'NOT' ]  'CHECKED' [  'ON' 'DELETE' reference_scope_check_action ]
 
 reference_scope_check_action ::= referential_action
 
@@ -812,9 +812,9 @@ referential_triggered_action ::=
 		update_rule [ delete_rule ]
 	|	delete_rule [ update_rule ]
 
-update_rule ::=  'ON' UPDATE referential_action
+update_rule ::=  'ON' 'UPDATE' referential_action
 
-delete_rule ::=  'ON' DELETE referential_action
+delete_rule ::=  'ON' 'DELETE' referential_action
 
 check_constraint_definition ::=  'CHECK' left_paren search_condition right_paren
 
@@ -1000,8 +1000,8 @@ search_clause ::=
 	 	'SEARCH' recursive_search_order  'SET' sequence_column
 
 recursive_search_order ::=
-	 	'DEPTH'  'FIRST' BY sort_specification_list
-	| 	'BREADTH'  'FIRST' BY sort_specification_list
+	 	'DEPTH'  'FIRST' 'BY' sort_specification_list
+	| 	'BREADTH'  'FIRST' 'BY' sort_specification_list
 
 sort_specification_list ::= sort_specification [ { comma sort_specification }* ]
 
@@ -1104,7 +1104,7 @@ table_subquery ::= subquery
 lateral_derived_table ::=  'LATERAL' left_paren query_expression right_paren
 
 collection_derived_table ::=
-	 	'UNNEST' left_paren collection_value_expression right_paren [  'WITH' ORDINALITY ]
+	 	'UNNEST' left_paren collection_value_expression right_paren [  'WITH' 'ORDINALITY' ]
 
 collection_value_expression ::= value_expression_primary
 
@@ -1112,7 +1112,7 @@ only_spec ::=  'ONLY' left_paren table_or_query_name right_paren
 
 joined_table ::= cross_join | qualified_join | natural_join | union_join
 
-cross_join ::= table_reference  'CROSS' JOIN table_primary
+cross_join ::= table_reference  'CROSS' 'JOIN' table_primary
 
 qualified_join ::= table_reference [ join_type ]  'JOIN' table_reference join_specification
 
@@ -1130,7 +1130,7 @@ join_column_list ::= column_name_list
 
 natural_join ::= table_reference  'NATURAL' [ join_type ]  'JOIN' table_primary
 
-union_join ::= table_reference  'UNION' JOIN table_primary
+union_join ::= table_reference  'UNION' 'JOIN' table_primary
 
 where_clause ::=  'WHERE' search_condition
 
@@ -1141,7 +1141,7 @@ where_clause ::=  'WHERE' search_condition
 ///small
 ///p
 
-group_by_clause ::=  'GROUP' BY grouping_element_list
+group_by_clause ::=  'GROUP' 'BY' grouping_element_list
 
 grouping_element_list ::= grouping_element [ { comma grouping_element }* ]
 
@@ -1161,7 +1161,7 @@ grouping_column_reference_list ::=
 
 cube_list ::=  'CUBE' left_paren grouping_column_reference_list right_paren
 
-grouping_sets_specification ::=  'GROUPING' SETS left_paren grouping_set_list right_paren
+grouping_sets_specification ::=  'GROUPING' 'SETS' left_paren grouping_set_list right_paren
 
 grouping_set_list ::= grouping_set [ { comma grouping_set }* ]
 
@@ -1524,7 +1524,7 @@ datetime_primary ::= value_expression_primary | datetime_value_function
 
 time_zone ::=  'AT' time_zone_specifier
 
-time_zone_specifier ::=  'LOCAL' |  'TIME' ZONE interval_primary
+time_zone_specifier ::=  'LOCAL' |  'TIME' 'ZONE' interval_primary
 
 length_expression ::= char_length_expression | octet_length_expression | bit_length_expression
 
@@ -1649,7 +1649,7 @@ row_value_expression_1 ::= row_value_expression
 row_value_expression_2 ::= row_value_expression
 
 similar_predicate ::=
-		character_match_value [  'NOT' ]  'SIMILAR' TO similar_pattern [  'ESCAPE' escape_character ]
+		character_match_value [  'NOT' ]  'SIMILAR' 'TO' similar_pattern [  'ESCAPE' escape_character ]
 
 similar_pattern ::= character_value_expression
 
@@ -1709,7 +1709,7 @@ similar_pattern ::= character_value_expression
 //hr
 
 distinct_predicate ::=
-		row_value_expression_3  'IS' DISTINCT  'FROM' row_value_expression_4
+		row_value_expression_3  'IS' 'DISTINCT'  'FROM' row_value_expression_4
 
 row_value_expression_3 ::= row_value_expression
 
@@ -1741,7 +1741,7 @@ constraint_characteristics ::=
 		constraint_check_time [ [  'NOT' ]  'DEFERRABLE' ]
 	|	[  'NOT' ]  'DEFERRABLE' [ constraint_check_time ]
 
-constraint_check_time ::=  'INITIALLY' DEFERRED |  'INITIALLY'  'IMMEDIATE'
+constraint_check_time ::=  'INITIALLY' 'DEFERRED' |  'INITIALLY'  'IMMEDIATE'
 
 table_constraint_definition ::=
 		[ constraint_name_definition ] table_constraint [ constraint_characteristics ]
@@ -1776,9 +1776,9 @@ self-referencing_column_specification ::=
 
 self-referencing_column_name ::= column_name
 
-reference_generation ::=  'SYSTEM' GENERATED |  'USER' GENERATED |  'DERIVED'
+reference_generation ::=  'SYSTEM' 'GENERATED' |  'USER' 'GENERATED' |  'DERIVED'
 
-column_options ::= column_name  'WITH' OPTIONS column_option_list
+column_options ::= column_name  'WITH' 'OPTIONS' column_option_list
 
 column_option_list ::=
 		[ scope_clause ] [ default_clause ] [ column_constraint_definition* ] [ collate_clause ]
@@ -1808,15 +1808,15 @@ cursor_sensitivity ::=  'SENSITIVE' |  'INSENSITIVE' |  'ASENSITIVE'
 
 cursor_scrollability ::=  'SCROLL' |  'NO'  'SCROLL'
 
-cursor_holdability ::=  'WITH' HOLD |  'WITHOUT'  'HOLD'
+cursor_holdability ::=  'WITH' 'HOLD' |  'WITHOUT'  'HOLD'
 
-cursor_returnability ::=  'WITH' RETURN |  'WITHOUT'  'RETURN'
+cursor_returnability ::=  'WITH' 'RETURN' |  'WITHOUT'  'RETURN'
 
 cursor_specification ::= query_expression [ order_by_clause ] [ updatability_clause ]
 
-order_by_clause ::=  'ORDER' BY sort_specification_list
+order_by_clause ::=  'ORDER' 'BY' sort_specification_list
 
-updatability_clause ::=  'FOR' {  'READ' ONLY |  'UPDATE' [  'OF' column_name_list ] }
+updatability_clause ::=  'FOR' {  'READ' 'ONLY' |  'UPDATE' [  'OF' column_name_list ] }
 
 //hr
 //h2  'SQL' Procedures
@@ -1916,7 +1916,7 @@ schema_character_set_or_path ::=
 	|	schema_path_specification schema_character_set_specification
 
 schema_character_set_specification ::=
-	 	'DEFAULT'  'CHARACTER' SET character_set_specification
+	 	'DEFAULT'  'CHARACTER' 'SET' character_set_specification
 
 schema_path_specification ::= path_specification
 
@@ -1946,7 +1946,7 @@ schema_element ::=
 
 table_definition ::=
 	 	'CREATE' [ table_scope ]  'TABLE' table_name table_contents_source
-		[  'ON' COMMIT table_commit_action  'ROWS' ]
+		[  'ON' 'COMMIT' table_commit_action  'ROWS' ]
 
 table_scope ::= global_or_local  'TEMPORARY'
 
@@ -1964,7 +1964,7 @@ supertable_name ::= table_name
 
 view_definition ::=
 	 	'CREATE' [  'RECURSIVE' ]  'VIEW' table_name view_specification
-	 	'AS' query_expression [  'WITH' [ levels_clause ]  'CHECK' OPTION ]
+	 	'AS' query_expression [  'WITH' [ levels_clause ]  'CHECK' 'OPTION' ]
 
 view_specification ::= regular_view_specification | referenceable_view_specification
 
@@ -1982,7 +1982,7 @@ view_element_list ::=
 
 view_element ::= view_column_option
 
-view_column_option ::= column_name  'WITH' OPTIONS scope_clause
+view_column_option ::= column_name  'WITH' 'OPTIONS' scope_clause
 
 levels_clause ::=  'CASCADED' |  'LOCAL'
 
@@ -1994,7 +1994,7 @@ domain_constraint ::=
 		[ constraint_name_definition ] check_constraint_definition [ constraint_characteristics ]
 
 character_set_definition ::=
-	 	'CREATE'  'CHARACTER' SET character_set_name
+	 	'CREATE'  'CHARACTER' 'SET' character_set_name
 		[  'AS' ] character_set_source [ collate_clause ]
 
 character_set_source ::=  'GET' character_set_specification
@@ -2005,7 +2005,7 @@ collation_definition ::=
 
 existing_collation_name ::= collation_name
 
-pad_characteristic ::=  'NO' PAD |  'PAD'  'SPACE'
+pad_characteristic ::=  'NO' 'PAD' |  'PAD'  'SPACE'
 
 translation_definition ::=
 	 	'CREATE'  'TRANSLATION' translation_name  'FOR' source_character_set_specification
@@ -2085,7 +2085,7 @@ old_values_table_alias ::= identifier
 new_values_table_alias ::= identifier
 
 triggered_action ::=
-		[  'FOR' EACH {  'ROW' |  'STATEMENT' } ]
+		[  'FOR' 'EACH' {  'ROW' |  'STATEMENT' } ]
 		[  'WHEN' left_paren search_condition right_paren ] triggered_SQL_statement
 
 //@@ This definition of triggered  'SQL' statement is superceded by the
@@ -2095,7 +2095,7 @@ triggered_action ::=
 //@@ 		SQL_procedure_statement
 //@@ 	| 	'BEGIN'  'ATOMIC' { SQL_procedure_statement semicolon }*   'END'
 
-user-defined_type_definition ::=  'CREATE' TYPE user-defined_type_body
+user-defined_type_definition ::=  'CREATE' 'TYPE' user-defined_type_body
 
 //p
 //small
@@ -2133,7 +2133,7 @@ finality ::=  'FINAL' |  'NOT'  'FINAL'
 
 reference_type_specification ::= user-defined_representation | derived_representation | system-generated_representation
 
-user-defined_representation ::=  'REF' USING predefined_type
+user-defined_representation ::=  'REF' 'USING' predefined_type
 
 ref_cast_option ::= [ cast_to_ref ] [ cast_to_type ]
 
@@ -2147,7 +2147,7 @@ cast_to_type ::=
 
 cast_to_type_identifier ::= identifier
 
-derived_representation ::=  'REF' FROM list_of_attributes
+derived_representation ::=  'REF' 'FROM' list_of_attributes
 
 list_of_attributes ::=
 		left_paren attribute_name [ { comma attribute_name }*] right_paren
@@ -2202,7 +2202,7 @@ returns_clause ::=  'RETURNS' returns_data_type [ result_cast ]
 
 returns_data_type ::= data_type [ locator_indication ]
 
-result_cast ::=  'CAST' FROM result_cast_from_type
+result_cast ::=  'CAST' 'FROM' result_cast_from_type
 
 result_cast_from_type ::= data_type [ locator_indication ]
 
@@ -2231,7 +2231,7 @@ method_characteristic ::=
 	|	SQL-data_access_indication
 	|	null-call_clause
 
-parameter_style_clause ::=  'PARAMETER' STYLE parameter_style
+parameter_style_clause ::=  'PARAMETER' 'STYLE' parameter_style
 
 parameter_style ::=  'SQL' |  'GENERAL'
 
@@ -2244,8 +2244,8 @@ SQL-data_access_indication ::=
 	| 	'MODIFIES'  'SQL'  'DATA'
 
 null-call_clause ::=
-	 	'RETURNS'  'NULL' ON  'NULL'  'INPUT'
-	| 	'CALLED'  'ON' NULL  'INPUT'
+	 	'RETURNS'  'NULL' 'ON'  'NULL'  'INPUT'
+	| 	'CALLED'  'ON' 'NULL'  'INPUT'
 
 overriding_method_specification ::=  'OVERRIDING' partial_method_specification
 
@@ -2276,7 +2276,7 @@ routine_characteristic ::=
 	|	dynamic_result_sets_characteristic
 
 dynamic_result_sets_characteristic ::=
-	 	'DYNAMIC'  'RESULT' SETS maximum_dynamic_result_sets
+	 	'DYNAMIC'  'RESULT' 'SETS' maximum_dynamic_result_sets
 
 maximum_dynamic_result_sets ::= unsigned_integer
 
@@ -2300,7 +2300,7 @@ external_routine_name ::= identifier | character_string_literal
 external_security_clause ::=
 	 	'EXTERNAL'  'SECURITY'  'DEFINER'
 	| 	'EXTERNAL'  'SECURITY'  'INVOKER'
-	| 	'EXTERNAL'  'SECURITY' IMPLEMENTATION  'DEFINED'
+	| 	'EXTERNAL'  'SECURITY' 'IMPLEMENTATION'  'DEFINED'
 
 schema_function ::=  'CREATE' SQL-invoked_function
 
@@ -2328,11 +2328,11 @@ grant_statement ::= grant_privilege_statement | grant_role_statement
 
 grant_privilege_statement ::=
 	 	'GRANT' privileges  'TO' grantee [ { comma grantee }* ]
-		[  'WITH' HIERARCHY  'OPTION' ] [  'WITH' GRANT  'OPTION' ] [  'GRANTED' BY grantor ]
+		[  'WITH' 'HIERARCHY'  'OPTION' ] [  'WITH' 'GRANT'  'OPTION' ] [  'GRANTED' 'BY' grantor ]
 
 privileges ::= object_privileges  'ON' object_name
 
-object_privileges ::=  'ALL' PRIVILEGES | action [ { comma action }* ]
+object_privileges ::=  'ALL' 'PRIVILEGES' | action [ { comma action }* ]
 
 action ::=
 	 	'SELECT'
@@ -2368,17 +2368,17 @@ grantor ::=  'CURRENT_USER' |  'CURRENT_ROLE'
 
 grant_role_statement ::=
 	 	'GRANT' role_granted [ { comma role_granted }* ]  'TO' grantee [ { comma grantee }* ]
-		[  'WITH' ADMIN  'OPTION' ] [  'GRANTED' BY grantor ]
+		[  'WITH' 'ADMIN'  'OPTION' ] [  'GRANTED' 'BY' grantor ]
 
 role_granted ::= role_name
 
-role_definition ::=  'CREATE' ROLE role_name [  'WITH' ADMIN grantor ]
+role_definition ::=  'CREATE' 'ROLE' role_name [  'WITH' 'ADMIN' grantor ]
 
 SQL-invoked_routine ::= schema_routine | module_routine
 
 user-defined_cast_definition ::=
 	 	'CREATE'  'CAST' left_paren source_data_type  'AS' target_data_type right_paren
-	 	'WITH' cast_function [  'AS' ASSIGNMENT ]
+	 	'WITH' cast_function [  'AS' 'ASSIGNMENT' ]
 
 source_data_type ::= data_type
 
@@ -2392,25 +2392,25 @@ cast_function ::= specific_routine_designator
 ///p
 
 user-defined_ordering_definition ::=
-	 	'CREATE'  'ORDERING' FOR user-defined_type_name ordering_form
+	 	'CREATE'  'ORDERING' 'FOR' user-defined_type_name ordering_form
 
 ordering_form ::= equals_ordering_form | full_ordering_form
 
-equals_ordering_form ::=  'EQUALS' ONLY  'BY' ordering_category
+equals_ordering_form ::=  'EQUALS' 'ONLY'  'BY' ordering_category
 
 ordering_category ::= relative_category | map_category | state_category
 
-relative_category ::=  'RELATIVE' WITH relative_function_specification
+relative_category ::=  'RELATIVE' 'WITH' relative_function_specification
 
 relative_function_specification ::= specific_routine_designator
 
-map_category ::=  'MAP' WITH map_function_specification
+map_category ::=  'MAP' 'WITH' map_function_specification
 
 map_function_specification ::= specific_routine_designator
 
 state_category ::=  'STATE' [ specific_name ]
 
-full_ordering_form ::=  'ORDER' FULL  'BY' ordering_category
+full_ordering_form ::=  'ORDER' 'FULL'  'BY' ordering_category
 
 //p
 //small
@@ -2429,11 +2429,11 @@ transform_element_list ::= transform_element [ comma transform_element ]
 
 transform_element ::= to_sql | from_sql
 
-to_sql ::=  'TO' SQL  'WITH' to_sql_function
+to_sql ::=  'TO' 'SQL'  'WITH' to_sql_function
 
 to_sql_function ::= specific_routine_designator
 
-from_sql ::=  'FROM' SQL  'WITH' from_sql_function
+from_sql ::=  'FROM' 'SQL'  'WITH' from_sql_function
 
 from_sql_function ::= specific_routine_designator
 
@@ -2464,11 +2464,11 @@ SQL_schema_manipulation_statement ::=
 	|	drop_transform_statement
 	|	drop_module_statement
 
-drop_schema_statement ::=  'DROP' SCHEMA schema_name drop_behavior
+drop_schema_statement ::=  'DROP' 'SCHEMA' schema_name drop_behavior
 
 drop_behavior ::=  'CASCADE' |  'RESTRICT'
 
-alter_table_statement ::=  'ALTER' TABLE table_name alter_table_action
+alter_table_statement ::=  'ALTER' 'TABLE' table_name alter_table_action
 
 alter_table_action ::=
 		add_column_definition
@@ -2493,17 +2493,17 @@ drop_column_default_clause ::=  'DROP'  'DEFAULT'
 
 add_column_scope_clause ::=  'ADD' scope_clause
 
-drop_column_scope_clause ::=  'DROP' SCOPE drop_behavior
+drop_column_scope_clause ::=  'DROP' 'SCOPE' drop_behavior
 
 drop_column_definition ::=  'DROP' [  'COLUMN' ] column_name drop_behavior
 
 add_table_constraint_definition ::=  'ADD' table_constraint_definition
 
-drop_table_constraint_definition ::=  'DROP' CONSTRAINT constraint_name drop_behavior
+drop_table_constraint_definition ::=  'DROP' 'CONSTRAINT' constraint_name drop_behavior
 
-drop_table_statement ::=  'DROP' TABLE table_name drop_behavior
+drop_table_statement ::=  'DROP' 'TABLE' table_name drop_behavior
 
-drop_view_statement ::=  'DROP' VIEW table_name drop_behavior
+drop_view_statement ::=  'DROP' 'VIEW' table_name drop_behavior
 
 alter_routine_statement ::=
 	 	'ALTER' specific_routine_designator alter_routine_characteristics alter_routine_behaviour
@@ -2530,19 +2530,19 @@ revoke_statement ::= revoke_privilege_statement | revoke_role_statement
 
 revoke_privilege_statement ::=
 	 	'REVOKE' [ revoke_option_extension ] privileges  'FROM' grantee
-		[ { comma grantee }* ] [  'GRANTED' BY grantor ] drop_behavior
+		[ { comma grantee }* ] [  'GRANTED' 'BY' grantor ] drop_behavior
 
-revoke_option_extension ::=  'GRANT' OPTION  'FOR' |  'HIERARCHY' OPTION  'FOR'
+revoke_option_extension ::=  'GRANT' 'OPTION'  'FOR' |  'HIERARCHY' 'OPTION'  'FOR'
 
 revoke_role_statement ::=
-	 	'REVOKE' [  'ADMIN' OPTION  'FOR' ] role_revoked [ { comma role_revoked }* ]
-	 	'FROM' grantee [ { comma grantee }* ] [  'GRANTED' BY grantor ] drop_behavior
+	 	'REVOKE' [  'ADMIN' 'OPTION'  'FOR' ] role_revoked [ { comma role_revoked }* ]
+	 	'FROM' grantee [ { comma grantee }* ] [  'GRANTED' 'BY' grantor ] drop_behavior
 
 role_revoked ::= role_name
 
-drop_role_statement ::=  'DROP' ROLE role_name
+drop_role_statement ::=  'DROP' 'ROLE' role_name
 
-alter_domain_statement ::=  'ALTER' DOMAIN domain_name alter_domain_action
+alter_domain_statement ::=  'ALTER' 'DOMAIN' domain_name alter_domain_action
 
 alter_domain_action ::=
 		set_domain_default_clause
@@ -2556,21 +2556,21 @@ drop_domain_default_clause ::=  'DROP'  'DEFAULT'
 
 add_domain_constraint_definition ::=  'ADD' domain_constraint
 
-drop_domain_constraint_definition ::=  'DROP' CONSTRAINT constraint_name
+drop_domain_constraint_definition ::=  'DROP' 'CONSTRAINT' constraint_name
 
-drop_domain_statement ::=  'DROP' DOMAIN domain_name drop_behavior
+drop_domain_statement ::=  'DROP' 'DOMAIN' domain_name drop_behavior
 
-drop_character_set_statement ::=  'DROP' CHARACTER  'SET' character_set_name
+drop_character_set_statement ::=  'DROP' 'CHARACTER'  'SET' character_set_name
 
-drop_collation_statement ::=  'DROP' COLLATION collation_name drop_behavior
+drop_collation_statement ::=  'DROP' 'COLLATION' collation_name drop_behavior
 
-drop_translation_statement ::=  'DROP' TRANSLATION translation_name
+drop_translation_statement ::=  'DROP' 'TRANSLATION' translation_name
 
-drop_assertion_statement ::=  'DROP' ASSERTION constraint_name
+drop_assertion_statement ::=  'DROP' 'ASSERTION' constraint_name
 
-drop_trigger_statement ::=  'DROP' TRIGGER trigger_name
+drop_trigger_statement ::=  'DROP' 'TRIGGER' trigger_name
 
-alter_type_statement ::=  'ALTER' TYPE user-defined_type_name alter_type_action
+alter_type_statement ::=  'ALTER' 'TYPE' user-defined_type_name alter_type_action
 
 alter_type_action ::=
 		add_attribute_definition
@@ -2579,9 +2579,9 @@ alter_type_action ::=
 	|	add_overriding_method_specification
 	|	drop_method_specification
 
-add_attribute_definition ::=  'ADD' ATTRIBUTE attribute_definition
+add_attribute_definition ::=  'ADD' 'ATTRIBUTE' attribute_definition
 
-drop_attribute_definition ::=  'DROP' ATTRIBUTE attribute_name  'RESTRICT'
+drop_attribute_definition ::=  'DROP' 'ATTRIBUTE' attribute_name  'RESTRICT'
 
 add_original_method_specification ::=  'ADD' original_method_specification
 
@@ -2607,7 +2607,7 @@ specific_method_specification_designator ::=
 	 	'SPECIFIC'  'METHOD' specific_method_name
 	|	[  'INSTANCE' |  'STATIC' |  'CONSTRUCTOR' ]  'METHOD' method_name [ data_type_list ]
 
-drop_data_type_statement ::=  'DROP' TYPE user-defined_type_name drop_behavior
+drop_data_type_statement ::=  'DROP' 'TYPE' user-defined_type_name drop_behavior
 
 //p
 //small
@@ -2617,7 +2617,7 @@ drop_data_type_statement ::=  'DROP' TYPE user-defined_type_name drop_behavior
 ///p
 
 drop_user-defined_ordering_statement ::=
-	 	'DROP'  'ORDERING' FOR user-defined_type_name drop_behavior
+	 	'DROP'  'ORDERING' 'FOR' user-defined_type_name drop_behavior
 
 //p
 //small
@@ -2688,7 +2688,7 @@ SQL_data_change_statement ::=
 	|	update_statement_searched
 
 delete_statement_positioned ::=
-	 	'DELETE'  'FROM' target_table  'WHERE' CURRENT  'OF' cursor_name
+	 	'DELETE'  'FROM' target_table  'WHERE' 'CURRENT'  'OF' cursor_name
 
 //p
 //small
@@ -2720,7 +2720,7 @@ from_constructor ::=
 		[ left_paren insert_column_list right_paren ] [ override_clause ]
 		contextually_typed_table_value_constructor
 
-override_clause ::=  'OVERRIDING' USER  'VALUE' |  'OVERRIDING' SYSTEM  'VALUE'
+override_clause ::=  'OVERRIDING' 'USER'  'VALUE' |  'OVERRIDING' 'SYSTEM'  'VALUE'
 
 contextually_typed_table_value_constructor ::=
 	 	'VALUES' contextually_typed_row_value_expression_list
@@ -2752,7 +2752,7 @@ contextually_typed_row_value_constructor_elementlist ::=
 from_default ::=  'DEFAULT'  'VALUES'
 
 update_statement_positioned ::=
-	 	'UPDATE' target_table  'SET' set_clause_list  'WHERE' CURRENT  'OF' cursor_name
+	 	'UPDATE' target_table  'SET' set_clause_list  'WHERE' 'CURRENT'  'OF' cursor_name
 
 set_clause_list ::= set_clause [ { comma set_clause }* ]
 
@@ -2824,7 +2824,7 @@ start_transaction_statement ::=
 
 transaction_mode ::= isolation_level | transaction_access_mode | diagnostics_size
 
-isolation_level ::=  'ISOLATION' LEVEL level_of_isolation
+isolation_level ::=  'ISOLATION' 'LEVEL' level_of_isolation
 
 level_of_isolation ::=
 	 	'READ'  'UNCOMMITTED'
@@ -2832,9 +2832,9 @@ level_of_isolation ::=
 	| 	'REPEATABLE'  'READ'
 	| 	'SERIALIZABLE'
 
-transaction_access_mode ::=  'READ' ONLY |  'READ'  'WRITE'
+transaction_access_mode ::=  'READ' 'ONLY' |  'READ'  'WRITE'
 
-diagnostics_size ::=  'DIAGNOSTICS' SIZE number_of_conditions
+diagnostics_size ::=  'DIAGNOSTICS' 'SIZE' number_of_conditions
 
 number_of_conditions ::= simple_value_specification
 
@@ -2868,13 +2868,13 @@ simple_target_specification ::=
 	|	SQL_variable_reference
 	|	embedded_variable_name
 
-release_savepoint_statement ::=  'RELEASE' SAVEPOINT savepoint_specifier
+release_savepoint_statement ::=  'RELEASE' 'SAVEPOINT' savepoint_specifier
 
 commit_statement ::=  'COMMIT' [  'WORK' ] [  'AND' [  'NO' ]  'CHAIN' ]
 
 rollback_statement ::=  'ROLLBACK' [  'WORK' ] [  'AND' [  'NO' ]   'CHAIN' ] [ savepoint_clause ]
 
-savepoint_clause ::=  'TO' SAVEPOINT savepoint_specifier
+savepoint_clause ::=  'TO' 'SAVEPOINT' savepoint_specifier
 
 //hr
 //h2 Connection Management
@@ -2882,7 +2882,7 @@ savepoint_clause ::=  'TO' SAVEPOINT savepoint_specifier
 
 SQL_connection_statement ::= connect_statement | set_connection_statement | disconnect_statement
 
-connect_statement ::=  'CONNECT' TO connection_target
+connect_statement ::=  'CONNECT' 'TO' connection_target
 
 connection_target ::=
 		SQL-server_name [  'AS' connection_name ] [  'USER' connection_user_name ]
@@ -2894,7 +2894,7 @@ connection_name ::= simple_value_specification
 
 connection_user_name ::= simple_value_specification
 
-set_connection_statement ::=  'SET' CONNECTION connection_object
+set_connection_statement ::=  'SET' 'CONNECTION' connection_object
 
 connection_object ::=  'DEFAULT' | connection_name
 
@@ -2918,18 +2918,18 @@ SQL_session_statement ::=
 	|	set_transform_group_statement
 
 set_session_user_identifier_statement ::=
-	 	'SET'  'SESSION' AUTHORIZATION value_specification
+	 	'SET'  'SESSION' 'AUTHORIZATION' value_specification
 
-set_role_statement ::=  'SET' ROLE role_specification
+set_role_statement ::=  'SET' 'ROLE' role_specification
 
 role_specification ::= value_specification |  'NONE'
 
-set_local_time_zone_statement ::=  'SET' TIME  'ZONE' set_time_zone_value
+set_local_time_zone_statement ::=  'SET' 'TIME'  'ZONE' set_time_zone_value
 
 set_time_zone_value ::= interval_value_expression |  'LOCAL'
 
 set_session_characteristics_statement ::=
-	 	'SET'  'SESSION' CHARACTERISTICS  'AS' session_characteristic_list
+	 	'SET'  'SESSION' 'CHARACTERISTICS'  'AS' session_characteristic_list
 
 session_characteristic_list ::= session_characteristic [ { comma session_characteristic }* ]
 
@@ -2937,7 +2937,7 @@ session_characteristic ::= transaction_characteristics
 
 SQL_diagnostics_statement ::= get_diagnostics_statement | signal_statement | resignal_statement
 
-get_diagnostics_statement ::=  'GET' DIAGNOSTICS SQL_diagnostics_information
+get_diagnostics_statement ::=  'GET' 'DIAGNOSTICS' SQL_diagnostics_information
 
 SQL_diagnostics_information ::= statement_information | condition_information
 
@@ -3187,7 +3187,7 @@ CLI_generic_name ::=
 	|	TablePrivileges | Tables
 	|	implementation-defined_CLI_generic_name
 
-implementation-defined_CLI_generic_name ::= // FIXME !! (See the Syntax Rules)
+implementation-defined_CLI_generic_name ::= // 'FIXME' !! (See the Syntax Rules)
 
 CLI_parameter_list ::=
 		left_paren CLI_parameter_declaration [ { comma CLI_parameter_declaration }* ] right_paren
@@ -3195,7 +3195,7 @@ CLI_parameter_list ::=
 CLI_parameter_declaration ::=
 		CLI_parameter_name CLI_parameter_mode CLI_parameter_data_type
 
-CLI_parameter_name ::= // FIXME !! (See the individual  'CLI' routine definitions)
+CLI_parameter_name ::= // 'FIXME' !! (See the individual  'CLI' routine definitions)
 
 CLI_parameter_mode ::=  'IN' |  'OUT' |  'DEFIN' |  'DEFOUT' |  'DEF'
 
@@ -3268,7 +3268,7 @@ local_handler_declaration_list ::= terminated_local_handler_declaration*
 terminated_local_handler_declaration ::= handler_declaration semicolon
 
 handler_declaration ::=
-	 	'DECLARE' handler_type  'HANDLER' FOR condition_value_list handler_action
+	 	'DECLARE' handler_type  'HANDLER' 'FOR' condition_value_list handler_action
 
 handler_type ::=  'CONTINUE' |  'EXIT' |  'UNDO'
 
@@ -3321,18 +3321,18 @@ iterate_statement ::=  'ITERATE' statement_label
 leave_statement ::=  'LEAVE' statement_label
 
 loop_statement ::=
-		[ beginning_label colon ]  'LOOP' SQL_statement_list  'END' LOOP [ ending_label ]
+		[ beginning_label colon ]  'LOOP' SQL_statement_list  'END' 'LOOP' [ ending_label ]
 
 while_statement ::=
-		[ beginning_label colon ]  'WHILE' search_condition  'DO' SQL_statement_list  'END' WHILE [ ending_label ]
+		[ beginning_label colon ]  'WHILE' search_condition  'DO' SQL_statement_list  'END' 'WHILE' [ ending_label ]
 
 repeat_statement ::=
-		[ beginning_label colon ]  'REPEAT' SQL_statement_list  'UNTIL' search_condition  'END' REPEAT [ ending_label ]
+		[ beginning_label colon ]  'REPEAT' SQL_statement_list  'UNTIL' search_condition  'END' 'REPEAT' [ ending_label ]
 
 for_statement ::=
 		[ beginning_label colon ]  'FOR' for_loop_variable_name  'AS'
-		[ cursor_name [ cursor_sensitivity ]  'CURSOR' FOR ] cursor_specification
-	 	'DO' SQL_statement_list  'END' FOR [ ending_label ]
+		[ cursor_name [ cursor_sensitivity ]  'CURSOR' 'FOR' ] cursor_specification
+	 	'DO' SQL_statement_list  'END' 'FOR' [ ending_label ]
 
 for_loop_variable_name ::= identifier
 
@@ -3359,7 +3359,7 @@ SQL-server_module_definition ::=
 
 SQL-server_module_name ::= schema_qualified_name
 
-SQL-server_module_character_set_specification ::=  'NAMES' ARE character_set_specification
+SQL-server_module_character_set_specification ::=  'NAMES' 'ARE' character_set_specification
 
 SQL-server_module_schema_clause ::=  'SCHEMA' default_schema_name
 
@@ -3375,7 +3375,7 @@ module_procedure ::= [  'DECLARE' ] SQL-invoked_procedure
 
 module_function ::= [  'DECLARE' ] SQL-invoked_function
 
-drop_module_statement ::=  'DROP' MODULE SQL-server_module_name drop_behavior
+drop_module_statement ::=  'DROP' 'MODULE' SQL-server_module_name drop_behavior
 
 //p
 //small
@@ -3414,7 +3414,7 @@ system_descriptor_statement ::=
 	|	get_descriptor_statement
 
 allocate_descriptor_statement ::=
-	 	'ALLOCATE' [  'SQL' ]  'DESCRIPTOR' descriptor_name [  'WITH' MAX occurrences ]
+	 	'ALLOCATE' [  'SQL' ]  'DESCRIPTOR' descriptor_name [  'WITH' 'MAX' occurrences ]
 
 descriptor_name ::= [ scope_option ] simple_value_specification
 
@@ -3431,13 +3431,13 @@ host_identifier ::=
 	|	Pascal_host_identifier
 	|	PL_I_host_identifier
 
-Ada_host_identifier ::= // FIXME !! (See the Syntax Rules.)
-C_host_identifier ::= // FIXME !! (See the Syntax Rules.)
-COBOL_host_identifier ::= // FIXME !! (See the Syntax Rules.)
-Fortran_host_identifier ::= // FIXME !! (See the Syntax Rules.)
-MUMPS_host_identifier ::= // FIXME !! (See the Syntax Rules.)
-Pascal_host_identifier ::= // FIXME !! (See the Syntax Rules.)
-PL_I_host_identifier ::= // FIXME !! (See the Syntax Rules.)
+Ada_host_identifier ::= // 'FIXME' !! (See the Syntax Rules.)
+C_host_identifier ::= // 'FIXME' !! (See the Syntax Rules.)
+COBOL_host_identifier ::= // 'FIXME' !! (See the Syntax Rules.)
+Fortran_host_identifier ::= // 'FIXME' !! (See the Syntax Rules.)
+MUMPS_host_identifier ::= // 'FIXME' !! (See the Syntax Rules.)
+Pascal_host_identifier ::= // 'FIXME' !! (See the Syntax Rules.)
+PL_I_host_identifier ::= // 'FIXME' !! (See the Syntax Rules.)
 
 occurrences ::= simple_value_specification
 
@@ -3533,7 +3533,7 @@ extended_statement_name ::= [ scope_option ] simple_value_specification
 
 SQL_statement_variable ::= simple_value_specification
 
-deallocate_prepared_statement ::=  'DEALLOCATE' PREPARE SQL_statement_name
+deallocate_prepared_statement ::=  'DEALLOCATE' 'PREPARE' SQL_statement_name
 
 describe_statement ::= describe_input_statement | describe_output_statement
 
@@ -3542,7 +3542,7 @@ describe_input_statement ::=
 
 using_descriptor ::=  'USING' [  'SQL' ]  'DESCRIPTOR' descriptor_name
 
-nesting_option ::=  'WITH' NESTING |  'WITHOUT'  'NESTING'
+nesting_option ::=  'WITH' 'NESTING' |  'WITHOUT'  'NESTING'
 
 describe_output_statement ::=
 	 	'DESCRIBE' [  'OUTPUT' ] described_object using_descriptor [ nesting_option ]
@@ -3581,7 +3581,7 @@ using_argument ::= general_value_specification
 
 using_input_descriptor ::= using_descriptor
 
-execute_immediate_statement ::=  'EXECUTE' IMMEDIATE SQL_statement_variable
+execute_immediate_statement ::=  'EXECUTE' 'IMMEDIATE' SQL_statement_variable
 
 SQL_dynamic_data_statement ::=
 		allocate_cursor_statement
@@ -3596,7 +3596,7 @@ allocate_cursor_statement ::=  'ALLOCATE' extended_cursor_name cursor_intent
 cursor_intent ::= statement_cursor | result_set_cursor
 
 statement_cursor ::=
-		[ cursor_sensitivity ] [  'SCROLL' ]  'CURSOR' [  'WITH' HOLD ] [  'WITH' RETURN ]
+		[ cursor_sensitivity ] [  'SCROLL' ]  'CURSOR' [  'WITH' 'HOLD' ] [  'WITH' 'RETURN' ]
 	 	'FOR' extended_statement_name
 
 result_set_cursor ::=
@@ -3613,10 +3613,10 @@ dynamic_fetch_statement ::=
 dynamic_close_statement ::=  'CLOSE' dynamic_cursor_name
 
 dynamic_delete_statement_positioned ::=
-	 	'DELETE'  'FROM' target_table  'WHERE' CURRENT  'OF' dynamic_cursor_name
+	 	'DELETE'  'FROM' target_table  'WHERE' 'CURRENT'  'OF' dynamic_cursor_name
 
 dynamic_update_statement_positioned ::=
-	 	'UPDATE' target_table  'SET' set_clause_list  'WHERE' CURRENT  'OF' dynamic_cursor_name
+	 	'UPDATE' target_table  'SET' set_clause_list  'WHERE' 'CURRENT'  'OF' dynamic_cursor_name
 
 //p
 //small
@@ -3669,10 +3669,10 @@ SQL-path_characteristic ::=  'PATH' value_specification
 set_transform_group_statement ::=  'SET' transform_group_characteristic
 
 transform_group_characteristic ::=
-	 	'DEFAULT'  'TRANSFORM' GROUP value_specification
-	| 	'TRANSFORM'  'GROUP' FOR  'TYPE' user-defined_type value_specification
+	 	'DEFAULT'  'TRANSFORM' 'GROUP' value_specification
+	| 	'TRANSFORM'  'GROUP' 'FOR'  'TYPE' user-defined_type value_specification
 
-direct_implementation-defined_statement ::= // FIXME !! (See the Syntax Rules)
+direct_implementation-defined_statement ::= // 'FIXME' !! (See the Syntax Rules)
 
 embedded_SQL_declare_section ::=
 		embedded_SQL_begin_declare
@@ -3682,14 +3682,14 @@ embedded_SQL_declare_section ::=
 	|	embedded_SQL_MUMPS_declare
 
 embedded_SQL_begin_declare ::=
-		SQL_prefix  'BEGIN' DECLARE  'SECTION' [ SQL_terminator ]
+		SQL_prefix  'BEGIN' 'DECLARE'  'SECTION' [ SQL_terminator ]
 
-SQL_prefix ::=  'EXEC' SQL | ampersandSQLleft_paren
+SQL_prefix ::=  'EXEC' 'SQL' | ampersandSQLleft_paren
 
 SQL_terminator ::= END-EXEC | semicolon | right_paren
 
 embedded_character_set_declaration ::=
-	 	'SQL'  'NAMES' ARE character_set_specification
+	 	'SQL'  'NAMES' 'ARE' character_set_specification
 
 host_variable_definition ::=
 		Ada_variable_definition
@@ -3710,7 +3710,7 @@ Ada_type_specification ::=
 	|	Ada_derived_type_specification
 
 Ada_qualified_type_specification ::=
-		'Interfaces.SQL' period  'CHAR' [  'CHARACTER' SET [  'IS' ] character_set_specification ]
+		'Interfaces.SQL' period  'CHAR' [  'CHARACTER' 'SET' [  'IS' ] character_set_specification ]
 		left_paren 1 double_period length right_paren
 	|	'Interfaces.SQL' period  'BIT' left_paren 1 double_period length right_paren
 	|	'Interfaces.SQL' period  'SMALLINT'
@@ -3789,7 +3789,7 @@ C_initial_value ::=
 		equals_operator character_representation*
 
 C_character_variable ::=
-		C_character_type [  'CHARACTER' SET [  'IS' ] character_set_specification ]
+		C_character_type [  'CHARACTER' 'SET' [  'IS' ] character_set_specification ]
 		C_host_identifier C_array_specification [ C_initial_value ]
 		[ { comma C_host_identifier C_array_specification [ C_initial_value ] }* ]
 
@@ -3881,11 +3881,11 @@ COBOL_type_specification ::=
 	|	COBOL_derived_type_specification
 
 COBOL_character_type ::=
-		[  'CHARACTER' SET [  'IS' ] character_set_specification ]
+		[  'CHARACTER' 'SET' [  'IS' ] character_set_specification ]
 		{  'PIC' |  'PICTURE' } [  'IS' ] { X [ left_paren length right_paren ] }*
 
 COBOL_national_character_type ::=
-		[  'CHARACTER' SET [  'IS' ] character_set_specification ]
+		[  'CHARACTER' 'SET' [  'IS' ] character_set_specification ]
 		{  'PIC' |  'PICTURE' } [  'IS' ] { N [ left_paren length right_paren ] }*
 
 COBOL_bit_type ::=
@@ -3917,33 +3917,33 @@ COBOL_derived_type_specification ::=
 	|	COBOL_REF_variable
 
 COBOL_CLOB_variable ::=
-		[  'USAGE' [  'IS' ] ]  'SQL' TYPE  'IS' CLOB left_paren large_object_length right_paren
-		[  'CHARACTER' SET [  'IS' ] character_set_specification ]
+		[  'USAGE' [  'IS' ] ]  'SQL' 'TYPE'  'IS' 'CLOB' left_paren large_object_length right_paren
+		[  'CHARACTER' 'SET' [  'IS' ] character_set_specification ]
 
 COBOL_NCLOB_variable ::=
-		[  'USAGE' [  'IS' ] ]  'SQL' TYPE  'IS' NCLOB left_paren large_object_length right_paren
-		[  'CHARACTER' SET [  'IS' ] character_set_specification ]
+		[  'USAGE' [  'IS' ] ]  'SQL' 'TYPE'  'IS' 'NCLOB' left_paren large_object_length right_paren
+		[  'CHARACTER' 'SET' [  'IS' ] character_set_specification ]
 
 COBOL_BLOB_variable ::=
-		[  'USAGE' [  'IS' ] ]  'SQL' TYPE  'IS' BLOB left_paren large_object_length right_paren
+		[  'USAGE' [  'IS' ] ]  'SQL' 'TYPE'  'IS' 'BLOB' left_paren large_object_length right_paren
 
 COBOL_user-defined_type_variable ::=
-		[  'USAGE' [  'IS' ] ]  'SQL' TYPE  'IS' user-defined_type  'AS' predefined_type
+		[  'USAGE' [  'IS' ] ]  'SQL' 'TYPE'  'IS' user-defined_type  'AS' predefined_type
 
 COBOL_CLOB_locator_variable ::=
-		[  'USAGE' [  'IS' ] ]  'SQL' TYPE  'IS' CLOB  'AS'  'LOCATOR'
+		[  'USAGE' [  'IS' ] ]  'SQL' 'TYPE'  'IS' 'CLOB'  'AS'  'LOCATOR'
 
 COBOL_BLOB_locator_variable ::=
-		[  'USAGE' [  'IS' ] ]  'SQL' TYPE  'IS' BLOB  'AS'  'LOCATOR'
+		[  'USAGE' [  'IS' ] ]  'SQL' 'TYPE'  'IS' 'BLOB'  'AS'  'LOCATOR'
 
 COBOL_array_locator_variable ::=
-		[  'USAGE' [  'IS' ] ]  'SQL' TYPE  'IS' collection_type  'AS'  'LOCATOR'
+		[  'USAGE' [  'IS' ] ]  'SQL' 'TYPE'  'IS' collection_type  'AS'  'LOCATOR'
 
 COBOL_user-defined_type_locator_variable ::=
-		[  'USAGE' [  'IS' ] ]  'SQL' TYPE  'IS' user-defined_type_name  'AS'  'LOCATOR'
+		[  'USAGE' [  'IS' ] ]  'SQL' 'TYPE'  'IS' user-defined_type_name  'AS'  'LOCATOR'
 
 COBOL_REF_variable ::=
-		[  'USAGE' [  'IS' ] ]  'SQL' TYPE  'IS' reference_type
+		[  'USAGE' [  'IS' ] ]  'SQL' 'TYPE'  'IS' reference_type
 
 Fortran_variable_definition ::=
 		Fortran_type_specification Fortran_host_identifier [ { comma Fortran_host_identifier }* ]
@@ -3959,8 +3959,8 @@ Fortran_variable_definition ::=
 ///p
 
 Fortran_type_specification ::=
-	 	'CHARACTER' [ asterisk length ] [  'CHARACTER' SET [  'IS' ] character_set_specification ]
-	| 	'CHARACTER'  'KIND' equals_operator unsigned_integer [ asterisk length ] [  'CHARACTER' SET [  'IS' ] character_set_specification ]
+	 	'CHARACTER' [ asterisk length ] [  'CHARACTER' 'SET' [  'IS' ] character_set_specification ]
+	| 	'CHARACTER'  'KIND' equals_operator unsigned_integer [ asterisk length ] [  'CHARACTER' 'SET' [  'IS' ] character_set_specification ]
 	| 	'BIT' [ asterisk length ]
 	| 	'INTEGER'
 	| 	'REAL'
@@ -3980,7 +3980,7 @@ Fortran_derived_type_specification ::=
 
 Fortran_CLOB_variable ::=
 	 	'SQL'  'TYPE' 'IS'  'CLOB' left_paren large_object_length right_paren
-		[  'CHARACTER' SET [  'IS' ] character_set_specification ]
+		[  'CHARACTER' 'SET' [  'IS' ] character_set_specification ]
 
 Fortran_BLOB_variable ::=
 	 	'SQL'  'TYPE' 'IS'  'BLOB' left_paren large_object_length right_paren
@@ -4054,7 +4054,7 @@ MUMPS_user-defined_type_locator_variable ::=
 MUMPS_array_locator_variable ::=
 	 	'SQL'  'TYPE' 'IS' collection_type  'AS'  'LOCATOR'
 
-MUMPS_REF_variable ::=  'SQL' TYPE  'IS' reference_type
+MUMPS_REF_variable ::=  'SQL' 'TYPE'  'IS' reference_type
 
 Pascal_variable_definition ::=
 		Pascal_host_identifier [ { comma Pascal_host_identifier }* ] colon
@@ -4062,11 +4062,11 @@ Pascal_variable_definition ::=
 
 Pascal_type_specification ::=
 	 	'PACKED'  'ARRAY' left_bracket 1 double_period length right_bracket
-	 	'OF'  'CHAR' [  'CHARACTER' SET [  'IS' ] character_set_specification ]
+	 	'OF'  'CHAR' [  'CHARACTER' 'SET' [  'IS' ] character_set_specification ]
 	| 	'PACKED'  'ARRAY' left_bracket 1 double_period length right_bracket  'OF'  'BIT'
 	| 	'INTEGER'
 	| 	'REAL'
-	| 	'CHAR' [  'CHARACTER' SET [  'IS' ] character_set_specification ]
+	| 	'CHAR' [  'CHARACTER' 'SET' [  'IS' ] character_set_specification ]
 	| 	'BIT'
 	| 	'BOOLEAN'
 	|	Pascal_derived_type_specification
@@ -4110,7 +4110,7 @@ PL_I_variable_definition ::=
 
 PL_I_type_specification ::=
 		{  'CHAR' |  'CHARACTER' } [  'VARYING' ] left_parenlengthright_paren
-		[  'CHARACTER' SET [  'IS' ] character_set_specification ]
+		[  'CHARACTER' 'SET' [  'IS' ] character_set_specification ]
 	| 	'BIT' [  'VARYING' ] left_paren length right_paren
 	|	PL_I_type_fixed_decimal left_paren precision [ comma scale ] right_paren
 	|	PL_I_type_fixed_binary [ left_paren precision right_paren ]
@@ -4177,13 +4177,13 @@ embedded_SQL_host_program ::=
 	|	embedded_SQL_Pascal_program
 	|	embedded_SQL_PL_I_program
 
-embedded_SQL_Ada_program ::= // FIXME !! (See the Syntax Rules.)
-embedded_SQL_C_program ::= // FIXME !! (See the Syntax Rules.)
-embedded_SQL_COBOL_program ::= // FIXME !! (See the Syntax Rules.)
-embedded_SQL_Fortran_program ::= // FIXME !! (See the Syntax Rules.)
-embedded_SQL_MUMPS_program ::= // FIXME !! (See the Syntax Rules.)
-embedded_SQL_Pascal_program ::= // FIXME !! (See the Syntax Rules.)
-embedded_SQL_PL_I_program ::= // FIXME !! (See the Syntax Rules.)
+embedded_SQL_Ada_program ::= // 'FIXME' !! (See the Syntax Rules.)
+embedded_SQL_C_program ::= // 'FIXME' !! (See the Syntax Rules.)
+embedded_SQL_COBOL_program ::= // 'FIXME' !! (See the Syntax Rules.)
+embedded_SQL_Fortran_program ::= // 'FIXME' !! (See the Syntax Rules.)
+embedded_SQL_MUMPS_program ::= // 'FIXME' !! (See the Syntax Rules.)
+embedded_SQL_Pascal_program ::= // 'FIXME' !! (See the Syntax Rules.)
+embedded_SQL_PL_I_program ::= // 'FIXME' !! (See the Syntax Rules.)
 embedded_SQL_statement ::= SQL_prefix statement_or_declaration [ SQL_terminator ]
 
 statement_or_declaration ::=
@@ -4238,11 +4238,11 @@ SQL_condition ::=
 
 major_category ::=  'SQLEXCEPTION' |  'SQLWARNING' |  'NOT'  'FOUND'
 
-SQLSTATE_class_value ::= SQLSTATE_char SQLSTATE_char // FIXME !! (See the Syntax Rules.)
+SQLSTATE_class_value ::= SQLSTATE_char SQLSTATE_char // 'FIXME' !! (See the Syntax Rules.)
 
 SQLSTATE_char ::= simple_Latin_upper_case_letter | digit
 
-SQLSTATE_subclass_value ::= SQLSTATE_char SQLSTATE_char SQLSTATE_char // FIXME !! (See the Syntax Rules.)
+SQLSTATE_subclass_value ::= SQLSTATE_char SQLSTATE_char SQLSTATE_char // 'FIXME' !! (See the Syntax Rules.)
 
 condition_action ::=  'CONTINUE' | go_to
 
@@ -4250,9 +4250,9 @@ go_to ::= {  'GOTO' |  'GO' 'TO' } goto_target
 
 goto_target ::= host_label_identifier | unsigned_integer | host_PL_I_label_variable
 
-host_label_identifier ::= // FIXME !! (See the Syntax Rules.)
+host_label_identifier ::= // 'FIXME' !! (See the Syntax Rules.)
 
-host_PL_I_label_variable ::= // FIXME !! (See the Syntax Rules.)
+host_PL_I_label_variable ::= // 'FIXME' !! (See the Syntax Rules.)
 
 //p
 //small
@@ -4274,7 +4274,7 @@ interval_primary ::=
 //i
 /*This module authorization clause definition from 9075-5 (SQL/Bindings)
 is similar to a previous occurrence from 9075-2 (SQL/Foundation) but the
-optional 'FOR  'STATIC' ONLY' and 'FOR  'STATIC' AND DYNAMIC' clauses were not
+optional 'FOR  'STATIC' ONLY' and 'FOR  'STATIC' 'AND' DYNAMIC' clauses were not
 present before.
 The earlier definition is commented out.*/
 ///i
@@ -4284,9 +4284,9 @@ The earlier definition is commented out.*/
 module_authorization_clause ::=
 	 	'SCHEMA' schema_name
 	| 	'AUTHORIZATION' module_authorization_identifier
-		[  'FOR' STATIC {  'ONLY' |  'AND' DYNAMIC } ]
+		[  'FOR' 'STATIC' {  'ONLY' |  'AND' 'DYNAMIC' } ]
 	| 	'SCHEMA' schema_name  'AUTHORIZATION' module_authorization_identifier
-		[  'FOR' STATIC {  'ONLY' |  'AND' DYNAMIC } ]
+		[  'FOR' 'STATIC' {  'ONLY' |  'AND' 'DYNAMIC' } ]
 
 preparable_statement ::=
 		preparable_SQL_data_statement
@@ -4310,10 +4310,10 @@ dynamic_single_row_select_statement ::= query_specification
 dynamic_select_statement ::= cursor_specification
 
 preparable_dynamic_delete_statement_positioned ::=
-	 	'DELETE' [  'FROM' target_table ]  'WHERE' CURRENT  'OF' [ scope_option ] cursor_name
+	 	'DELETE' [  'FROM' target_table ]  'WHERE' 'CURRENT'  'OF' [ scope_option ] cursor_name
 
 preparable_dynamic_update_statement_positioned ::=
-	 	'UPDATE' [ target_table ]  'SET' set_clause_list  'WHERE' CURRENT  'OF' [ scope_option ] cursor_name
+	 	'UPDATE' [ target_table ]  'SET' set_clause_list  'WHERE' 'CURRENT'  'OF' [ scope_option ] cursor_name
 
 preparable_SQL_schema_statement ::= SQL_schema_statement
 
@@ -4323,10 +4323,10 @@ preparable_SQL_control_statement ::= SQL_control_statement
 
 preparable_SQL_session_statement ::= SQL_session_statement
 
-preparable_implementation-defined_statement ::= // FIXME !! (See the Syntax Rules.)
+preparable_implementation-defined_statement ::= // 'FIXME' !! (See the Syntax Rules.)
 
 //hr
-//h2  'END' OF SQL-99  'GRAMMAR'
+//h2  'END' 'OF' SQL-99  'GRAMMAR'
 ///h2
 
 //hr

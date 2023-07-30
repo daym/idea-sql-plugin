@@ -1,6 +1,5 @@
 package com.github.daym.ideasqlplugin
 
-import com.intellij.openapi.fileTypes.FileType
 import com.intellij.openapi.fileTypes.LanguageFileType
 import com.intellij.openapi.util.NlsContexts
 import com.intellij.openapi.util.NlsSafe
