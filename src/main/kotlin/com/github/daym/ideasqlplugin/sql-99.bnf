@@ -27,23 +27,23 @@ arc3 ::= '9075'
 
 SQL_variant ::= SQL_edition SQL_conformance
 
-SQL_edition ::= '1987' | '1989' | '1992' | '1999'
+SQL_edition ::= J1987 | J1989 | J1992 | J1999
 
-1987 ::= '0' | 'edition1987' left_paren '0' right_paren
+J1987 ::= '0' | 'edition1987' left_paren '0' right_paren
 
-1989 ::= 1989_base 1989_package
+J1989 ::= J1989_base J1989_package
 
-1989_base ::= '1' | edition1989 left_paren 1 right_paren
+J1989_base ::= '1' | edition1989 left_paren 1 right_paren
 
-1989_package ::= integrity_no | integrity_yes
+J1989_package ::= integrity_no | integrity_yes
 
 integrity_no ::= '0' | IntegrityNo left_paren 0 right_paren
 
 integrity_yes ::= '1' | IntegrityYes left_paren 1 right_paren
 
-1992 ::= '2' | 'edition1992' left_paren '2' right_paren
+J1992 ::= '2' | 'edition1992' left_paren '2' right_paren
 
-1999 ::= '3' | 'edition1999' left_paren '3' right_paren
+J1999 ::= '3' | 'edition1999' left_paren '3' right_paren
 
 SQL_conformance ::= level parts packages
 
@@ -60,7 +60,7 @@ parts ::= Part_3 Part_4 Part_5 Part_6 Part_7 Part_8 Part_9 Part_10
 //p
 //small
 //i
-The parenthesized (i) and (n) are italic in the  'SQL' standard.
+/*The parenthesized (i) and (n) are italic in the  'SQL' standard.
 It is not clear exactly what this should look like, despite all the
 information.
 However, it is also not important; this is not really a part of the  'SQL'
@@ -68,19 +68,22 @@ language per se.
 Note that the package numbers are PKG001 to PKG009, for example.
 We still have to devise a mechanism to persuade bnf2yacc.pl to ignore
 this information.
+*/
 ///i
 ///small
 ///p
+// Dropped: PKG(i)
 
-packages ::= Package_PKG(i) ...
+/*
+packages ::= Package_PKG_i_ ...
 
-Part_(n) ::= Part_(n)_no | Part_(n)_yes
+Part_n ::= Part_n_no | Part_n_yes
 
-Part_(n)_no ::= '0' | Part-(n)No left_paren 0 right_paren
+Part_n_no ::= '0' | 'Part-(n)No' left_paren 0 right_paren
 
-Part_(n)_yes ::= !! (as specified in ISO/IEC 9075-(n))
+Part_n_yes ::= //!! (as specified in ISO/IEC 9075-(n))
 
-Package_PKG(i) ::= Package_PKG(i)Yes | Package_PKG(i)No
+Package_PKG_i_ ::= Package_PKG_i_Yes | Package_PKG_i_No
 
 Part_3_yes ::= Part_3_conformance
 
@@ -97,11 +100,12 @@ Part_4_module_yes ::= '1' | moduleyes left_paren '1' right_paren
 Part_4_module_no ::= '0' | moduleno left_paren '0' right_paren
 
 Part_5_yes ::= Part_5_conformance Part_5_direct Part_5_embedded
+*/
 
 //p
 //small
 //i
-The original used sqlbindings199x, but the x should clearly be a 9.
+//The original used sqlbindings199x, but the x should clearly be a 9.
 ///i
 ///small
 ///p
@@ -114,7 +118,7 @@ Part_5_direct_yes ::= '1' | 'directyes' left_paren '1' right_paren
 
 Part_5_direct_no ::= '0' | 'directno' left_paren '0' right_paren
 
-Part_5_embedded ::= Part_5_embedded_no | Part_5_embedded_languages...
+Part_5_embedded ::= Part_5_embedded_no | Part_5_embedded_languages ...
 
 Part_5_embedded_no ::= '0' | embeddedno left_paren '0' right_paren
 
@@ -125,7 +129,7 @@ Part_5_embedded_languages ::=
 	|	Part_5_embedded_Fortran
 	|	Part_5_embedded_MUMPS
 	|	Part_5_embedded_Pascal
-	|	Part_5_embedded_PL/I
+	|	Part_5_embedded_PL_I
 
 Part_5_embedded_Ada ::= '1' | embeddedAda left_paren '1' right_paren
 
@@ -139,17 +143,17 @@ Part_5_embedded_MUMPS ::= '5' | embeddedMUMPS left_paren '5' right_paren
 
 Part_5_embedded_Pascal ::= '6' | embeddedPascal left_paren '6' right_paren
 
-Part_5_embedded_PL/I ::= '7' | embeddedPLI left_paren '7' right_paren
+Part_5_embedded_PL_I ::= '7' | embeddedPLI left_paren '7' right_paren
 
 //hr
 //h2 Basic Definitions of Characters Used, Tokens, Symbols, Etc.
 ///h2
 
 //p
-Most of this section would normally be handled within the lexical
-analyzer rather than in the grammar proper.
-Further, the original document does not quote the various single
-characters, which makes it hard to process automatically.
+//Most of this section would normally be handled within the lexical
+//analyzer rather than in the grammar proper.
+//Further, the original document does not quote the various single
+//characters, which makes it hard to process automatically.
 ///p
 
 SQL_terminal_character ::= SQL_language_character
@@ -240,8 +244,8 @@ SQL-client_module_definition ::=
 		module_authorization_clause
 		[ module_path_specification ]
 		[ module_transform_group_specification ]
-		[ temporary_table_declaration... ]
-		module_contents...
+		[ temporary_table_declaration ... ]
+		module_contents ...
 
 module_name_clause ::=
 	 	'MODULE' [ SQL-client_module_name ] [ module_character_set_specification ]
@@ -268,7 +272,7 @@ with other places where '...' modifies a single non-terminal.
 ///small
 ///p
 
-identifier_body ::= identifier_start [ identifier_part... ]
+identifier_body ::= identifier_start [ identifier_part ... ]
 
 identifier_start ::= initial_alphabetic_character | ideographic_character
 
@@ -421,7 +425,7 @@ column_definition ::=
 		{ data_type | domain_name }
 		[ reference_scope_check ]
 		[ default_clause ]
-		[ column_constraint_definition... ]
+		[ column_constraint_definition ... ]
 		[ collate_clause ]
 
 column_name ::= identifier
@@ -648,7 +652,7 @@ general_literal ::=
 	|	boolean_literal
 
 character_string_literal ::=
-		[ introducercharacter_set_specification ]
+		[ introducer character_set_specification ]
 		quote [ character_representation... ] quote
 		[ { separator quote [ character_representation... ] quote }... ]
 
@@ -2177,12 +2181,12 @@ user-defined_representation ::=  'REF' USING predefined_type
 ref_cast_option ::= [ cast_to_ref ] [ cast_to_type ]
 
 cast_to_ref ::=
-	 	'CAST' left_paren  'SOURCE' AS  'REF' right_paren  'WITH' cast_to_ref_identifier
+	 	'CAST' left_paren  'SOURCE' 'AS'  'REF' right_paren  'WITH' cast_to_ref_identifier
 
 cast_to_ref_identifier ::= identifier
 
 cast_to_type ::=
-	 	'CAST' left_paren  'REF' AS  'SOURCE' right_paren  'WITH' cast_to_type_identifier
+	 	'CAST' left_paren  'REF' 'AS'  'SOURCE' right_paren  'WITH' cast_to_type_identifier
 
 cast_to_type_identifier ::= identifier
 
@@ -2191,17 +2195,17 @@ derived_representation ::=  'REF' FROM list_of_attributes
 list_of_attributes ::=
 		left_paren attribute_name [ { comma attribute_name }...] right_paren
 
-system-generated_representation ::=  'REF' IS  'SYSTEM'  'GENERATED'
+system-generated_representation ::=  'REF' 'IS'  'SYSTEM'  'GENERATED'
 
 cast_option ::= [ cast_to_distinct ] [ cast_to_source ]
 
 cast_to_distinct ::=
-	 	'CAST' left_paren  'SOURCE' AS  'DISTINCT' right_paren  'WITH' cast_to_distinct_identifier
+	 	'CAST' left_paren  'SOURCE' 'AS'  'DISTINCT' right_paren  'WITH' cast_to_distinct_identifier
 
 cast_to_distinct_identifier ::= identifier
 
 cast_to_source ::=
-	 	'CAST' left_paren  'DISTINCT' AS  'SOURCE' right_paren  'WITH' cast_to_source_identifier
+	 	'CAST' left_paren  'DISTINCT' 'AS'  'SOURCE' right_paren  'WITH' cast_to_source_identifier
 
 cast_to_source_identifier ::= identifier
 
@@ -2210,7 +2214,7 @@ method_specification_list ::= method_specification [ { comma method_specificatio
 method_specification ::= original_method_specification | overriding_method_specification
 
 original_method_specification ::=
-		partial_method_specification [  'SELF' AS  'RESULT' ] [  'SELF' AS  'LOCATOR' ]
+		partial_method_specification [  'SELF' 'AS'  'RESULT' ] [  'SELF' 'AS'  'LOCATOR' ]
 		[ method_characteristics ]
 
 //p
@@ -3339,7 +3343,7 @@ simple_case_operand_2 ::= value_expression
 case_statement_else_clause ::=  'ELSE' SQL_statement_list
 
 searched_case_statement ::=
-	 	'CASE' searched_case_statement_when_clause...  [ case_statement_else_clause ]  'END'  'CASE'
+	 	'CASE' searched_case_statement_when_clause...  [ case_statement_else_clause ] 'END'  'CASE'
 
 searched_case_statement_when_clause ::=
 	 	'WHEN' search_condition  'THEN' SQL_statement_list
@@ -3468,7 +3472,7 @@ host_identifier ::=
 	|	Fortran_host_identifier
 	|	MUMPS_host_identifier
 	|	Pascal_host_identifier
-	|	PL/I_host_identifier
+	|	PL_I_host_identifier
 
 Ada_host_identifier ::= !! (See the Syntax Rules.)
 
@@ -3482,7 +3486,7 @@ MUMPS_host_identifier ::= !! (See the Syntax Rules.)
 
 Pascal_host_identifier ::= !! (See the Syntax Rules.)
 
-PL/I_host_identifier ::= !! (See the Syntax Rules.)
+PL_I_host_identifier ::= !! (See the Syntax Rules.)
 
 occurrences ::= simple_value_specification
 
@@ -3743,7 +3747,7 @@ host_variable_definition ::=
 	|	Fortran_variable_definition
 	|	MUMPS_variable_definition
 	|	Pascal_variable_definition
-	|	PL/I_variable_definition
+	|	PL_I_variable_definition
 
 Ada_variable_definition ::=
 		Ada_host_identifier [ { comma Ada_host_identifier }... ] colon
@@ -3788,29 +3792,29 @@ Ada_derived_type_specification ::=
 	|	Ada_REF_variable
 
 Ada_CLOB_variable ::=
-	 	'SQL'  'TYPE' IS  'CLOB' left_paren large_object_length right_paren
-		[  'CHARACTER' SET [  'IS' ] character_set_specification ]
+	 	'SQL'  'TYPE' 'IS'  'CLOB' left_paren large_object_length right_paren
+		[  'CHARACTER' 'SET' [  'IS' ] character_set_specification ]
 
 Ada_BLOB_variable ::=
-	 	'SQL'  'TYPE' IS  'BLOB' left_paren large_object_length right_paren
+	 	'SQL'  'TYPE' 'IS'  'BLOB' left_paren large_object_length right_paren
 
 Ada_user-defined_type_variable ::=
-	 	'SQL'  'TYPE' IS user-defined_type  'AS' predefined_type
+	 	'SQL'  'TYPE' 'IS' user-defined_type  'AS' predefined_type
 
 Ada_CLOB_locator_variable ::=
-	 	'SQL'  'TYPE' IS  'CLOB' AS  'LOCATOR'
+	 	'SQL'  'TYPE' 'IS'  'CLOB' 'AS'  'LOCATOR'
 
 Ada_BLOB_locator_variable ::=
-	 	'SQL'  'TYPE' IS  'BLOB' AS  'LOCATOR'
+	 	'SQL'  'TYPE' 'IS'  'BLOB' 'AS'  'LOCATOR'
 
 Ada_user-defined_type_locator_variable ::=
-	 	'SQL'  'TYPE' IS user-defined_type_name  'AS'  'LOCATOR'
+	 	'SQL'  'TYPE' 'IS' user-defined_type_name  'AS'  'LOCATOR'
 
 Ada_array_locator_variable ::=
-	 	'SQL'  'TYPE' IS collection_type  'AS'  'LOCATOR'
+	 	'SQL'  'TYPE' 'IS' collection_type  'AS'  'LOCATOR'
 
 Ada_REF_variable ::=
-	 	'SQL'  'TYPE' IS reference_type
+	 	'SQL'  'TYPE' 'IS' reference_type
 
 Ada_initial_value ::=
 		Ada_assignment_operator character_representation...
@@ -3858,32 +3862,32 @@ C_derived_variable ::=
 	|	C_REF_variable
 
 C_VARCHAR_variable ::=
-	 	'VARCHAR' [  'CHARACTER' SET [  'IS' ] character_set_specification ]
+	 	'VARCHAR' [  'CHARACTER' 'SET' [  'IS' ] character_set_specification ]
 		C_host_identifier C_array_specification [ C_initial_value ]
 		[ { comma C_host_identifier C_array_specification [ C_initial_value ] }... ]
 
 C_NCHAR_variable ::=
-	 	'NCHAR' [  'CHARACTER' SET [  'IS' ] character_set_specification ]
+	 	'NCHAR' [  'CHARACTER' 'SET' [  'IS' ] character_set_specification ]
 		C_host_identifier C_array_specification [ C_initial_value ]
 		[ { comma C_host_identifier C_array_specification [ C_initial_value ] } ... ]
 
 C_NCHAR_VARYING_variable ::=
-	 	'NCHAR'  'VARYING' [  'CHARACTER' SET [  'IS' ] character_set_specification ]
+	 	'NCHAR'  'VARYING' [  'CHARACTER' 'SET' [  'IS' ] character_set_specification ]
 		C_host_identifier C_array_specification [ C_initial_value ]
 		[ { comma C_host_identifier C_array_specification [ C_initial_value ] } ... ]
 
 C_CLOB_variable ::=
-	 	'SQL'  'TYPE' IS  'CLOB' left_paren large_object_length right_paren
-		[  'CHARACTER' SET [  'IS' ] character_set_specification ]
+	 	'SQL'  'TYPE' 'IS'  'CLOB' left_paren large_object_length right_paren
+		[  'CHARACTER' 'SET' [  'IS' ] character_set_specification ]
 		C_host_identifier [ C_initial_value ] [ { comma C_host_identifier [ C_initial_value ] }... ]
 
 C_NCLOB_variable ::=
-	 	'SQL'  'TYPE' IS  'NCLOB' left_paren large_object_length right_paren
-		[  'CHARACTER' SET [  'IS' ] character_set_specification ]
+	 	'SQL'  'TYPE' 'IS'  'NCLOB' left_paren large_object_length right_paren
+		[  'CHARACTER' 'SET' [  'IS' ] character_set_specification ]
 		C_host_identifier [ C_initial_value ] [ { comma C_host_identifier [ C_initial_value ] }... ]
 
 C_BLOB_variable ::=
-	 	'SQL'  'TYPE' IS  'BLOB' left_paren large_object_length right_paren
+	 	'SQL'  'TYPE' 'IS'  'BLOB' left_paren large_object_length right_paren
 		C_host_identifier [ C_initial_value ] [ { comma C_host_identifier [ C_initial_value ] } ... ]
 
 C_bit_variable ::=
@@ -3891,27 +3895,27 @@ C_bit_variable ::=
 		[ { comma C_host_identifier C_array_specification [ C_initial_value ] }... ]
 
 C_user-defined_type_variable ::=
-	 	'SQL'  'TYPE' IS user-defined_type  'AS' predefined_type
+	 	'SQL'  'TYPE' 'IS' user-defined_type  'AS' predefined_type
 		C_host_identifier [ C_initial_value ] [ { comma C_host_identifier [ C_initial_value ] } ... ]
 
 C_CLOB_locator_variable ::=
-	 	'SQL'  'TYPE' IS  'CLOB' AS  'LOCATOR'
+	 	'SQL'  'TYPE' 'IS'  'CLOB' 'AS'  'LOCATOR'
 		C_host_identifier [ C_initial_value ] [ { comma C_host_identifier [ C_initial_value ] } ... ]
 
 C_BLOB_locator_variable ::=
-	 	'SQL'  'TYPE' IS  'BLOB' AS  'LOCATOR'
+	 	'SQL'  'TYPE' 'IS'  'BLOB' 'AS'  'LOCATOR'
 		C_host_identifier [ C_initial_value ] [ { comma C_host_identifier [ C_initial_value ] } ... ]
 
 C_array_locator_variable ::=
-	 	'SQL'  'TYPE' IS collection_type  'AS'  'LOCATOR'
+	 	'SQL'  'TYPE' 'IS' collection_type  'AS'  'LOCATOR'
 		C_host_identifier [ C_initial_value ] [ { comma C_host_identifier [ C_initial_value ] } ... ]
 
 C_user-defined_type_locator_variable ::=
-	 	'SQL'  'TYPE' IS user-defined_type  'AS'  'LOCATOR'
+	 	'SQL'  'TYPE' 'IS' user-defined_type  'AS'  'LOCATOR'
 		C_host_identifier [ C_initial_value ] [ { comma C_host_identifier [ C_initial_value ] }... ]
 
 C_REF_variable ::=
-	 	'SQL'  'TYPE' IS reference_type
+	 	'SQL'  'TYPE' 'IS' reference_type
 
 COBOL_variable_definition ::=
 		{'01'|'77'} COBOL_host_identifier COBOL_type_specification
@@ -3996,9 +4000,9 @@ Fortran_variable_definition ::=
 //p
 //small
 //i
-The standard documents 'CHARACTER  'KIND' = n' but there is no explanation
-of the italic 'n' that is used.
-Presumably, it is an integer literal, hence unsigned_integer.
+//The standard documents 'CHARACTER  'KIND' = n' but there is no explanation
+//of the italic 'n' that is used.
+//Presumably, it is an integer literal, hence unsigned_integer.
 ///i
 ///small
 ///p
@@ -4024,29 +4028,29 @@ Fortran_derived_type_specification ::=
 	|	Fortran_REF_variable
 
 Fortran_CLOB_variable ::=
-	 	'SQL'  'TYPE' IS  'CLOB' left_paren large_object_length right_paren
+	 	'SQL'  'TYPE' 'IS'  'CLOB' left_paren large_object_length right_paren
 		[  'CHARACTER' SET [  'IS' ] character_set_specification ]
 
 Fortran_BLOB_variable ::=
-	 	'SQL'  'TYPE' IS  'BLOB' left_paren large_object_length right_paren
+	 	'SQL'  'TYPE' 'IS'  'BLOB' left_paren large_object_length right_paren
 
 Fortran_user-defined_type_variable ::=
-	 	'SQL'  'TYPE' IS user-defined_type  'AS' predefined_type
+	 	'SQL'  'TYPE' 'IS' user-defined_type  'AS' predefined_type
 
 Fortran_CLOB_locator_variable ::=
-	 	'SQL'  'TYPE' IS  'CLOB' AS  'LOCATOR'
+	 	'SQL'  'TYPE' 'IS'  'CLOB' 'AS'  'LOCATOR'
 
 Fortran_BLOB_locator_variable ::=
-	 	'SQL'  'TYPE' IS  'BLOB' AS  'LOCATOR'
+	 	'SQL'  'TYPE' 'IS'  'BLOB' 'AS'  'LOCATOR'
 
 Fortran_user-defined_type_locator_variable ::=
-	 	'SQL'  'TYPE' IS user-defined_type_name  'AS'  'LOCATOR'
+	 	'SQL'  'TYPE' 'IS' user-defined_type_name  'AS'  'LOCATOR'
 
 Fortran_array_locator_variable ::=
-	 	'SQL'  'TYPE' IS collection_type  'AS'  'LOCATOR'
+	 	'SQL'  'TYPE' 'IS' collection_type  'AS'  'LOCATOR'
 
 Fortran_REF_variable ::=
-	 	'SQL'  'TYPE' IS reference_type
+	 	'SQL'  'TYPE' 'IS' reference_type
 
 MUMPS_variable_definition ::=
 		MUMPS_numeric_variable semicolon
@@ -4080,24 +4084,24 @@ MUMPS_derived_type_specification ::=
 	|	MUMPS_REF_variable
 
 MUMPS_CLOB_variable ::=
-	 	'SQL'  'TYPE' IS  'CLOB' left_paren large_object_length right_paren
-		[  'CHARACTER' SET [  'IS' ] character_set_specification ]
+	 	'SQL'  'TYPE' 'IS'  'CLOB' left_paren large_object_length right_paren
+		[  'CHARACTER' 'SET' [  'IS' ] character_set_specification ]
 
 MUMPS_BLOB_variable ::=
-	 	'SQL'  'TYPE' IS  'BLOB' left_paren large_object_length right_paren
+	 	'SQL'  'TYPE' 'IS'  'BLOB' left_paren large_object_length right_paren
 
 MUMPS_user-defined_type_variable ::=
-	 	'SQL'  'TYPE' IS user-defined_type  'AS' predefined_type
+	 	'SQL'  'TYPE' 'IS' user-defined_type  'AS' predefined_type
 
-MUMPS_CLOB_locator_variable ::=  'SQL' TYPE  'IS' CLOB  'AS'  'LOCATOR'
+MUMPS_CLOB_locator_variable ::=  'SQL' 'TYPE'  'IS' 'CLOB'  'AS'  'LOCATOR'
 
-MUMPS_BLOB_locator_variable ::=  'SQL' TYPE  'IS' BLOB  'AS'  'LOCATOR'
+MUMPS_BLOB_locator_variable ::=  'SQL' 'TYPE'  'IS' 'BLOB'  'AS'  'LOCATOR'
 
 MUMPS_user-defined_type_locator_variable ::=
-	 	'SQL'  'TYPE' IS user-defined_type_name  'AS'  'LOCATOR'
+	 	'SQL'  'TYPE' 'IS' user-defined_type_name  'AS'  'LOCATOR'
 
 MUMPS_array_locator_variable ::=
-	 	'SQL'  'TYPE' IS collection_type  'AS'  'LOCATOR'
+	 	'SQL'  'TYPE' 'IS' collection_type  'AS'  'LOCATOR'
 
 MUMPS_REF_variable ::=  'SQL' TYPE  'IS' reference_type
 
@@ -4127,91 +4131,91 @@ Pascal_derived_type_specification ::=
 	|	Pascal_REF_variable
 
 Pascal_CLOB_variable ::=
-	 	'SQL'  'TYPE' IS  'CLOB' left_paren large_object_length right_paren
-		[  'CHARACTER' SET [  'IS' ] character_set_specification ]
+	 	'SQL'  'TYPE' 'IS'  'CLOB' left_paren large_object_length right_paren
+		[  'CHARACTER' 'SET' [  'IS' ] character_set_specification ]
 
 Pascal_BLOB_variable ::=
-	 	'SQL'  'TYPE' IS  'BLOB' left_paren large_object_length right_paren
+	 	'SQL'  'TYPE' 'IS'  'BLOB' left_paren large_object_length right_paren
 
 Pascal_user-defined_type_variable ::=
-	 	'SQL'  'TYPE' IS user-defined_type  'AS' predefined_type
+	 	'SQL'  'TYPE' 'IS' user-defined_type  'AS' predefined_type
 
-Pascal_CLOB_locator_variable ::=  'SQL' TYPE  'IS' CLOB  'AS'  'LOCATOR'
+Pascal_CLOB_locator_variable ::=  'SQL' 'TYPE'  'IS' 'CLOB'  'AS'  'LOCATOR'
 
-Pascal_BLOB_locator_variable ::=  'SQL' TYPE  'IS' BLOB  'AS'  'LOCATOR'
+Pascal_BLOB_locator_variable ::=  'SQL' 'TYPE'  'IS' 'BLOB'  'AS'  'LOCATOR'
 
 Pascal_user-defined_type_locator_variable ::=
-	 	'SQL'  'TYPE' IS user-defined_type_name  'AS'  'LOCATOR'
+	 	'SQL'  'TYPE' 'IS' user-defined_type_name  'AS'  'LOCATOR'
 
 Pascal_array_locator_variable ::=
-	 	'SQL'  'TYPE' IS collection_type  'AS'  'LOCATOR'
+	 	'SQL'  'TYPE' 'IS' collection_type  'AS'  'LOCATOR'
 
-Pascal_REF_variable ::=  'SQL' TYPE  'IS' reference_type
+Pascal_REF_variable ::=  'SQL' 'TYPE'  'IS' reference_type
 
-PL/I_variable_definition ::=
+PL_I_variable_definition ::=
 		{DCL |  'DECLARE' }
-		{ PL/I_host_identifier | left_paren PL/I_host_identifier [ { comma PL/I_host_identifier }... ] right_paren }
-		PL/I_type_specification [ character_representation... ] semicolon
+		{ PL_I_host_identifier | left_paren PL_I_host_identifier [ { comma PL_I_host_identifier }... ] right_paren }
+		PL_I_type_specification [ character_representation... ] semicolon
 
-PL/I_type_specification ::=
+PL_I_type_specification ::=
 		{  'CHAR' |  'CHARACTER' } [  'VARYING' ] left_parenlengthright_paren
 		[  'CHARACTER' SET [  'IS' ] character_set_specification ]
-	| 	'BIT' [  'VARYING' ] left_parenlengthright_paren
-	|	PL/I_type_fixed_decimal left_paren precision [ comma scale ] right_paren
-	|	PL/I_type_fixed_binary [ left_paren precision right_paren ]
-	|	PL/I_type_float_binary left_paren precision right_paren
-	|	PL/I_derived_type_specification
+	| 	'BIT' [  'VARYING' ] left_paren length right_paren
+	|	PL_I_type_fixed_decimal left_paren precision [ comma scale ] right_paren
+	|	PL_I_type_fixed_binary [ left_paren precision right_paren ]
+	|	PL_I_type_float_binary left_paren precision right_paren
+	|	PL_I_derived_type_specification
 
-PL/I_type_fixed_decimal ::=
+PL_I_type_fixed_decimal ::=
 		{  'DEC' |  'DECIMAL' }  'FIXED'
 	| 	'FIXED' {  'DEC' |  'DECIMAL' }
 
-PL/I_type_fixed_binary ::=
+PL_I_type_fixed_binary ::=
 		{  'BIN' |  'BINARY' }  'FIXED'
 	| 	'FIXED' {  'BIN' |  'BINARY' }
 
-PL/I_type_float_binary ::=
+PL_I_type_float_binary ::=
 		{  'BIN' |  'BINARY' }  'FLOAT'
 	| 	'FLOAT' {  'BIN' |  'BINARY' }
 
-PL/I_derived_type_specification ::=
-		PL/I_CLOB_variable
-	|	PL/I_BLOB_variable
-	|	PL/I_user-defined_type_variable
-	|	PL/I_CLOB_locator_variable
-	|	PL/I_BLOB_locator_variable
-	|	PL/I_user-defined_type_locator_variable
-	|	PL/I_array_locator_variable
-	|	PL/I_REF_variable
+PL_I_derived_type_specification ::=
+		PL_I_CLOB_variable
+	|	PL_I_BLOB_variable
+	|	PL_I_user-defined_type_variable
+	|	PL_I_CLOB_locator_variable
+	|	PL_I_BLOB_locator_variable
+	|	PL_I_user-defined_type_locator_variable
+	|	PL_I_array_locator_variable
+	|	PL_I_REF_variable
 
-PL/I_CLOB_variable ::=
-	 	'SQL'  'TYPE' IS  'CLOB' left_paren large_object_length right_paren
-		[  'CHARACTER' SET [  'IS' ] character_set_specification ]
+PL_I_CLOB_variable ::=
+	 	'SQL'  'TYPE' 'IS'  'CLOB' left_paren large_object_length right_paren
+		[  'CHARACTER' 'SET' [  'IS' ] character_set_specification ]
 
-PL/I_BLOB_variable ::=
-	 	'SQL'  'TYPE' IS  'BLOB' left_paren large_object_length right_paren
+PL_I_BLOB_variable ::=
+	 	'SQL'  'TYPE' 'IS'  'BLOB' left_paren large_object_length right_paren
 
-PL/I_user-defined_type_variable ::=
-	 	'SQL'  'TYPE' IS user-defined_type  'AS' predefined_type
+PL_I_user-defined_type_variable ::=
+	 	'SQL'  'TYPE' 'IS' user-defined_type  'AS' predefined_type
 
-PL/I_CLOB_locator_variable ::=  'SQL' TYPE  'IS' CLOB  'AS'  'LOCATOR'
+PL_I_CLOB_locator_variable ::=  'SQL' 'TYPE'  'IS' 'CLOB'  'AS'  'LOCATOR'
 
-PL/I_BLOB_locator_variable ::=  'SQL' TYPE  'IS' BLOB  'AS'  'LOCATOR'
+PL_I_BLOB_locator_variable ::=  'SQL' 'TYPE'  'IS' 'BLOB'  'AS'  'LOCATOR'
 
-PL/I_user-defined_type_locator_variable ::=
-	 	'SQL'  'TYPE' IS user-defined_type_name  'AS'  'LOCATOR'
+PL_I_user-defined_type_locator_variable ::=
+	 	'SQL'  'TYPE' 'IS' user-defined_type_name  'AS'  'LOCATOR'
 
-PL/I_array_locator_variable ::=  'SQL' TYPE  'IS' collection_type  'AS'  'LOCATOR'
+PL_I_array_locator_variable ::=  'SQL' 'TYPE'  'IS' collection_type  'AS'  'LOCATOR'
 
-PL/I_REF_variable ::=  'SQL' TYPE  'IS' reference_type
+PL_I_REF_variable ::=  'SQL' 'TYPE'  'IS' reference_type
 
 embedded_SQL_end_declare ::=
-		SQL_prefix  'END' DECLARE  'SECTION' [ SQL_terminator ]
+		SQL_prefix  'END' 'DECLARE'  'SECTION' [ SQL_terminator ]
 
 embedded_SQL_MUMPS_declare ::=
-		SQL_prefix  'BEGIN' DECLARE  'SECTION'
+		SQL_prefix  'BEGIN' 'DECLARE' 'SECTION'
 		[ embedded_character_set_declaration ] [ host_variable_definition... ]
-	 	'END'  'DECLARE' SECTION SQL_terminator
+	 	'END'  'DECLARE' 'SECTION' SQL_terminator
 
 embedded_SQL_host_program ::=
 		embedded_SQL_Ada_program
@@ -4220,7 +4224,7 @@ embedded_SQL_host_program ::=
 	|	embedded_SQL_Fortran_program
 	|	embedded_SQL_MUMPS_program
 	|	embedded_SQL_Pascal_program
-	|	embedded_SQL_PL/I_program
+	|	embedded_SQL_PL_I_program
 
 embedded_SQL_Ada_program ::= !! (See the Syntax Rules.)
 
@@ -4234,7 +4238,7 @@ embedded_SQL_MUMPS_program ::= !! (See the Syntax Rules.)
 
 embedded_SQL_Pascal_program ::= !! (See the Syntax Rules.)
 
-embedded_SQL_PL/I_program ::= !! (See the Syntax Rules.)
+embedded_SQL_PL_I_program ::= !! (See the Syntax Rules.)
 
 embedded_SQL_statement ::= SQL_prefix statement_or_declaration [ SQL_terminator ]
 
@@ -4259,9 +4263,9 @@ embedded_authorization_declaration ::=  'DECLARE' embedded_authorization_clause
 embedded_authorization_clause ::=
 	 	'SCHEMA' schema_name
 	| 	'AUTHORIZATION' embedded_authorization_identifier
-		[  'FOR' STATIC {  'ONLY' |  'AND' DYNAMIC } ]
+		[  'FOR' 'STATIC' {  'ONLY' |  'AND' 'DYNAMIC' } ]
 	| 	'SCHEMA' schema_name  'AUTHORIZATION' embedded_authorization_identifier
-		[  'FOR' STATIC {  'ONLY' |  'AND' DYNAMIC } ]
+		[  'FOR' 'STATIC' {  'ONLY' |  'AND' 'DYNAMIC' } ]
 
 embedded_authorization_identifier ::= module_authorization_identifier
 
@@ -4276,9 +4280,9 @@ condition ::= SQL_condition
 //p
 //small
 //i
-The standard documents 'SQLSTATE ( SQLSTATE_class_value [ , <SQLSTATE
+/*The standard documents 'SQLSTATE ( SQLSTATE_class_value [ , <SQLSTATE
 subclass value> ] )', but it is not clear why the left_paren, comma
-and right_paren are not designated more accurately.
+and right_paren are not designated more accurately.*/
 ///i
 ///small
 ///p
@@ -4300,11 +4304,11 @@ condition_action ::=  'CONTINUE' | go_to
 
 go_to ::= {  'GOTO' |  'GO' TO } goto_target
 
-goto_target ::= host_label_identifier | unsigned_integer | host_PL/I_label_variable
+goto_target ::= host_label_identifier | unsigned_integer | host_PL_I_label_variable
 
 host_label_identifier ::= !! (See the Syntax Rules.)
 
-host_PL/I_label_variable ::= !! (See the Syntax Rules.)
+host_PL_I_label_variable ::= !! (See the Syntax Rules.)
 
 //p
 //small
@@ -4324,11 +4328,11 @@ interval_primary ::=
 //p
 //small
 //i
-This module authorization clause definition from 9075-5 (SQL/Bindings)
+/*This module authorization clause definition from 9075-5 (SQL/Bindings)
 is similar to a previous occurrence from 9075-2 (SQL/Foundation) but the
 optional 'FOR  'STATIC' ONLY' and 'FOR  'STATIC' AND DYNAMIC' clauses were not
 present before.
-The earlier definition is commented out.
+The earlier definition is commented out.*/
 ///i
 ///small
 ///p
