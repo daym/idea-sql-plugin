@@ -1046,12 +1046,12 @@ query_expression_body ::= non-join_query_expression | joined_table
 
 non-join_query_expression ::=
 		non-join_query_term
-	|	query_expression_body  'UNION'  [  'ALL' |  'DISTINCT' ] [ corresponding_spec ] query_term
-	|	query_expression_body  'EXCEPT' [  'ALL' |  'DISTINCT' ] [ corresponding_spec ] query_term
+	|	query_term  'UNION'  [  'ALL' |  'DISTINCT' ] [ corresponding_spec ] query_expression_body // FIXME
+	|	query_term  'EXCEPT' [  'ALL' |  'DISTINCT' ] [ corresponding_spec ] query_expression_body // FIXME
 
 non-join_query_term ::=
 		non-join_query_primary
-	|	query_term  'INTERSECT' [  'ALL' |  'DISTINCT' ] [ corresponding_spec ] query_primary
+	|	query_primary  'INTERSECT' [  'ALL' |  'DISTINCT' ] [ corresponding_spec ] query_term // FIXME
 
 non-join_query_primary ::=
 		simple_table
@@ -1282,7 +1282,7 @@ reference_value_expression ::= value_expression_primary
 collection_value_constructor ::= array_value_expression
 
 array_value_expression ::= array_value_constructor
-  | array_concatenation
+  | array_concatenation // FIXME
   | value_expression_primary
 
 array_value_constructor ::= array_value_list_constructor
@@ -1295,7 +1295,7 @@ array_element_list ::= array_element [ { comma array_element }* ]
 array_element ::= value_expression
 
 array_concatenation ::=
-		array_value_expression concatenation_operator array_value_expression
+		value_expression_primary concatenation_operator array_value_expression // FIXME array_value_expression in front?
 
 concatenation_operator ::= '||' // FIXME
 
@@ -2378,6 +2378,8 @@ role_granted ::= role_name
 role_definition ::=  'CREATE' 'ROLE' role_name [  'WITH' 'ADMIN' grantor ]
 
 SQL-invoked_routine ::= schema_routine | module_routine
+
+target_data_type ::= data_type
 
 user-defined_cast_definition ::=
 	 	'CREATE'  'CAST' left_paren source_data_type  'AS' target_data_type right_paren
