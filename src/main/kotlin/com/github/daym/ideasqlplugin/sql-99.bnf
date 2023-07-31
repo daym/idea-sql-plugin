@@ -401,12 +401,15 @@ column_name ::= identifier
 //h2 Data Types
 ///h2
 
-data_type ::=
+simple_data_type ::=
 		predefined_type
 	|	row_type
 	|	user-defined_type
 	|	reference_type
-	|	collection_type
+
+data_type ::=
+		simple_data_type
+    |	collection_type // FIXME
 
 predefined_type ::=
 		character_string_type [  'CHARACTER' 'SET' character_set_specification ]
@@ -544,7 +547,8 @@ referenced_type ::= user-defined_type
 
 scope_clause ::=  'SCOPE' table_name
 
-collection_type ::= data_type array_specification
+// FIXME the collection now doesn't support foo(2)(3), which it does in the standard.
+collection_type ::= simple_data_type array_specification
 
 array_specification ::=
 		collection_type_constructor left_bracket_or_trigraph unsigned_integer right_bracket_or_trigraph
@@ -826,11 +830,11 @@ search_condition ::= boolean_value_expression
 
 boolean_value_expression ::=
 		boolean_term
-	|	boolean_value_expression  'OR' boolean_term
+	|  boolean_term 'OR' boolean_value_expression
 
 boolean_term ::=
 		boolean_factor
-	|	boolean_term  'AND' boolean_factor
+	|	boolean_factor 'AND' boolean_term
 
 boolean_factor ::= [  'NOT' ] boolean_test
 
@@ -897,21 +901,21 @@ value_expression ::=
 	|	string_value_expression
 	|	datetime_value_expression
 	|	interval_value_expression
-	|	boolean_value_expression
+// FIXME	|	boolean_value_expression
 	|	user-defined_type_value_expression
-	|	row_value_expression
+// FIXME	|	row_value_expression
 	|	reference_value_expression
 	|	collection_value_expression
 
 numeric_value_expression ::=
 		term
-	|	numeric_value_expression plus_sign term
-	|	numeric_value_expression minus_sign term
+	|	term plus_sign numeric_value_expression
+	|	term minus_sign numeric_value_expression
 
 term ::=
 		factor
-	|	term asterisk factor
-	|	term solidus factor
+	|	factor asterisk term
+	|	factor solidus term
 
 factor ::= [ sign ] numeric_primary
 
@@ -933,13 +937,13 @@ nonparenthesized_value_expression_primary ::=
 	|	case_expression
 	|	cast_specification
 	|	subtype_treatment
-	|	attribute_or_method_reference
-	|	reference_resolution
-	|	collection_value_constructor
-	|	routine_invocation
-	|	field_reference
-	|	element_reference
-	|	method_invocation
+//	|	attribute_or_method_reference // FIXME
+//	|	reference_resolution // FIXME
+//	|	collection_value_constructor // FIXME
+	|	routine_invocation // FIXME
+//	|	field_reference // FIXME
+//	|	element_reference // FIXME
+//	|	method_invocation // FIXME
 	|	static_method_invocation
 	|	new_specification
 
@@ -1276,7 +1280,9 @@ reference_value_expression ::= value_expression_primary
 
 collection_value_constructor ::= array_value_expression
 
-array_value_expression ::= array_value_constructor | array_concatenation | value_expression_primary
+array_value_expression ::= array_value_constructor
+  | array_concatenation
+  | value_expression_primary
 
 array_value_constructor ::= array_value_list_constructor
 
@@ -1288,13 +1294,9 @@ array_element_list ::= array_element [ { comma array_element }* ]
 array_element ::= value_expression
 
 array_concatenation ::=
-		array_value_expression_1 concatenation_operator array_value_expression_2
-
-array_value_expression_1 ::= array_value_expression
+		array_value_expression concatenation_operator array_value_expression
 
 concatenation_operator ::= '||' // FIXME
-
-array_value_expression_2 ::= array_value_expression
 
 routine_invocation ::= routine_name SQL_argument_list
 
@@ -1363,7 +1365,7 @@ string_value_expression ::= character_value_expression | bit_value_expression | 
 
 character_value_expression ::= concatenation | character_factor
 
-concatenation ::= character_value_expression concatenation_operator character_factor
+concatenation ::= character_factor concatenation_operator character_value_expression
 
 character_factor ::= character_primary [ collate_clause ]
 
@@ -1442,7 +1444,7 @@ blob_substring_function ::=
 
 blob_value_expression ::= blob_concatenation | blob_factor
 
-blob_concatenation ::= blob_value_expression concatenation_operator blob_factor
+blob_concatenation ::= blob_factor concatenation_operator blob_value_expression
 
 blob_factor ::= blob_primary
 
@@ -1468,7 +1470,7 @@ bit_substring_function ::=
 
 bit_value_expression ::= bit_concatenation | bit_factor
 
-bit_concatenation ::= bit_value_expression concatenation_operator bit_factor
+bit_concatenation ::= bit_factor concatenation_operator bit_value_expression
 
 bit_factor ::= bit_primary
 
@@ -1496,9 +1498,9 @@ datetime_value_expression ::=
 
 interval_term ::=
 		interval_factor
-	|	interval_term asterisk factor
-	|	interval_term solidus factor
-	|	term asterisk interval_factor
+	|	factor asterisk interval_term
+	|	factor solidus interval_term
+	|	interval_factor asterisk term // FIXME check
 
 interval_factor ::= [ sign ] interval_primary
 
@@ -1511,8 +1513,8 @@ interval_absolute_value_function ::=  'ABS' left_paren interval_value_expression
 
 interval_value_expression ::=
 		interval_term
-	|	interval_value_expression plus_sign interval_term
-	|	interval_value_expression minus_sign interval_term
+	|	interval_term plus_sign interval_value_expression
+	|	interval_term minus_sign interval_value_expression
 	|	left_paren datetime_value_expression minus_sign
 		datetime_term right_paren interval_qualifier
 
@@ -3169,22 +3171,22 @@ CLI_by-reference_prefix ::=  'SQLR'
 CLI_by-value_prefix ::=  'SQL'
 
 CLI_generic_name ::=
-		AllocConnect | AllocEnv | AllocHandle | AllocStmt
-	|	BindCol | BindParameter
-	|	Cancel | CloseCursor | ColAttribute | ColumnPrivileges | Columns | Connect | CopyDesc
-	|	DataSources | DescribeCol | Disconnect
-	|	EndTran | Error | ExecDirect | Execute
-	|	Fetch | FetchScroll | ForeignKeys | FreeConnect | FreeEnv | FreeHandle | FreeStmt
-	|	GetConnectAttr | GetCursorName | GetData | GetDescField | GetDescRec | GetDiagField
-	|	GetDiagRec | GetEnvAttr | GetFeatureInfo | GetFunctions | GetInfo | GetLength
-	|	GetParamData | GetPosition | GetSessionInfo | GetStmtAttr | GetSubString | GetTypeInfo
-	|	MoreResults
-	|	NextResult | NumResultCols
-	|	ParamData | Prepare | PrimaryKeys | PutData
-	|	RowCount
-	|	SetConnectAttr | SetCursorName | SetDescField | SetDescRec | SetEnvAttr | SetStmtAttr
-	|	SpecialColumns | StartTran
-	|	TablePrivileges | Tables
+		'AllocConnect' | 'AllocEnv' | 'AllocHandle' | 'AllocStmt'
+	|	'BindCol' | 'BindParameter'
+	|	'Cancel' | 'CloseCursor' | 'ColAttribute' | 'ColumnPrivileges' | 'Columns' | 'Connect' | 'CopyDesc'
+	|	'DataSources' | 'DescribeCol' | 'Disconnect'
+	|	'EndTran' | 'Error' | 'ExecDirect' | 'Execute'
+	|	'Fetch' | 'FetchScroll' | 'ForeignKeys' | 'FreeConnect' | 'FreeEnv' | 'FreeHandle' | 'FreeStmt'
+	|	'GetConnectAttr' | 'GetCursorName' | 'GetData' | 'GetDescField' | 'GetDescRec' | 'GetDiagField'
+	|	'GetDiagRec' | 'GetEnvAttr' | 'GetFeatureInfo' | 'GetFunctions' | 'GetInfo' | 'GetLength'
+	|	'GetParamData' | 'GetPosition' | 'GetSessionInfo' | 'GetStmtAttr' | 'GetSubString' | 'GetTypeInfo'
+	|	'MoreResults'
+	|	'NextResult' | 'NumResultCols'
+	|	'ParamData' | 'Prepare' | 'PrimaryKeys' | 'PutData'
+	|	'RowCount'
+	|	'SetConnectAttr' | 'SetCursorName' | 'SetDescField' | 'SetDescRec' | 'SetEnvAttr' | 'SetStmtAttr'
+	|	'SpecialColumns' | 'StartTran'
+	|	'TablePrivileges' | 'Tables'
 	|	implementation-defined_CLI_generic_name
 
 implementation-defined_CLI_generic_name ::= // 'FIXME' !! (See the Syntax Rules)
@@ -4109,7 +4111,7 @@ PL_I_variable_definition ::=
 		PL_I_type_specification [ character_representation* ] semicolon
 
 PL_I_type_specification ::=
-		{  'CHAR' |  'CHARACTER' } [  'VARYING' ] left_parenlengthright_paren
+		{  'CHAR' |  'CHARACTER' } [  'VARYING' ] left_paren length right_paren
 		[  'CHARACTER' 'SET' [  'IS' ] character_set_specification ]
 	| 	'BIT' [  'VARYING' ] left_paren length right_paren
 	|	PL_I_type_fixed_decimal left_paren precision [ comma scale ] right_paren
