@@ -34,6 +34,8 @@
   ]
 }
 
+// See https://ronsavage.github.io/SQL/
+
 root ::= directly_executable_statement  'GO' *
 
 SQL_object_identifier ::= SQL_provenance SQL_variant
@@ -42,7 +44,7 @@ SQL_provenance ::= arc1 arc2 arc3
 
 arc1 ::= 'iso' | '1' | 'iso' left_paren '1' right_paren
 
-arc2 ::= standard | '0' | standard left_paren '0' right_paren
+arc2 ::= 'standard' | '0' | 'standard' left_paren '0' right_paren
 
 arc3 ::= '9075'
 
