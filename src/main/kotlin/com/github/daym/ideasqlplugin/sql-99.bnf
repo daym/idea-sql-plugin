@@ -1085,7 +1085,8 @@ from_clause ::=  'FROM' table_reference_list
 
 table_reference_list ::= table_reference [ { comma table_reference }* ]
 
-table_reference ::= table_primary | joined_table
+table_reference ::= table_primary
+    | joined_table
 
 table_primary ::=
 		table_or_query_name [ [  'AS' ] correlation_name [ left_paren derived_column_list right_paren ] ]
@@ -1116,9 +1117,9 @@ only_spec ::=  'ONLY' left_paren table_or_query_name right_paren
 
 joined_table ::= cross_join | qualified_join | natural_join | union_join
 
-cross_join ::= table_reference  'CROSS' 'JOIN' table_primary
+cross_join ::= table_primary 'CROSS' 'JOIN' table_reference
 
-qualified_join ::= table_reference [ join_type ]  'JOIN' table_reference join_specification
+qualified_join ::= table_primary [ join_type ]  'JOIN' table_reference join_specification // FIXME
 
 join_type ::=  'INNER' | outer_join_type [  'OUTER' ]
 
@@ -1132,9 +1133,9 @@ named_columns_join ::=  'USING' left_paren join_column_list right_paren
 
 join_column_list ::= column_name_list
 
-natural_join ::= table_reference  'NATURAL' [ join_type ]  'JOIN' table_primary
+natural_join ::= table_primary  'NATURAL' [ join_type ]  'JOIN' table_reference
 
-union_join ::= table_reference  'UNION' 'JOIN' table_primary
+union_join ::= table_primary  'UNION' 'JOIN'  table_reference
 
 where_clause ::=  'WHERE' search_condition
 
@@ -1490,11 +1491,11 @@ time_zone_field ::=  'TIMEZONE_HOUR' |  'TIMEZONE_MINUTE'
 
 extract_source ::= datetime_value_expression | interval_value_expression
 
-datetime_value_expression ::=
+datetime_value_expression ::= // FIXME
 		datetime_term
-	|	interval_value_expression plus_sign datetime_term
-	|	datetime_value_expression plus_sign interval_term
-	|	datetime_value_expression minus_sign interval_term
+	|	datetime_term plus_sign interval_value_expression
+	|	interval_term plus_sign datetime_value_expression
+	|	interval_term minus_sign datetime_value_expression
 
 interval_term ::=
 		interval_factor
@@ -1546,7 +1547,7 @@ absolute_value_expression ::=
 	 	'ABS' left_paren numeric_value_expression right_paren
 
 modulus_expression ::=
-	 	'MOD' left_paren numeric_value_expression_dividend comma numeric_value_expression_divisorright_paren
+	 	'MOD' left_paren numeric_value_expression_dividend comma numeric_value_expression_divisor right_paren
 
 numeric_value_expression_dividend ::= numeric_value_expression
 
@@ -3162,7 +3163,7 @@ delimiter_token ::=
 
 CLI_routine ::= CLI_routine_name CLI_parameter_list [ CLI_returns_clause ]
 
-CLI_routine_name ::= CLI_name_prefixCLI_generic_name
+CLI_routine_name ::= CLI_name_prefix CLI_generic_name
 
 CLI_name_prefix ::= CLI_by-reference_prefix | CLI_by-value_prefix
 
@@ -3686,9 +3687,9 @@ embedded_SQL_declare_section ::=
 embedded_SQL_begin_declare ::=
 		SQL_prefix  'BEGIN' 'DECLARE'  'SECTION' [ SQL_terminator ]
 
-SQL_prefix ::=  'EXEC' 'SQL' | ampersandSQLleft_paren
+SQL_prefix ::=  'EXEC' 'SQL' | ampersand 'SQL' left_paren
 
-SQL_terminator ::= END-EXEC | semicolon | right_paren
+SQL_terminator ::= 'END-EXEC' | semicolon | right_paren
 
 embedded_character_set_declaration ::=
 	 	'SQL'  'NAMES' 'ARE' character_set_specification
@@ -3713,7 +3714,7 @@ Ada_type_specification ::=
 
 Ada_qualified_type_specification ::=
 		'Interfaces.SQL' period  'CHAR' [  'CHARACTER' 'SET' [  'IS' ] character_set_specification ]
-		left_paren 1 double_period length right_paren
+		left_paren '1' double_period length right_paren
 	|	'Interfaces.SQL' period  'BIT' left_paren 1 double_period length right_paren
 	|	'Interfaces.SQL' period  'SMALLINT'
 	|	'Interfaces.SQL' period  'INT'
@@ -3724,8 +3725,8 @@ Ada_qualified_type_specification ::=
 	|	'Interfaces.SQL' period  'INDICATOR_TYPE'
 
 Ada_unqualified_type_specification ::=
-	 	'CHAR' left_paren 1 double_period length right_paren
-	| 	'BIT' left_paren 1 double_period length right_paren
+	 	'CHAR' left_paren '1' double_period length right_paren
+	| 	'BIT' left_paren '1' double_period length right_paren
 	| 	'SMALLINT'
 	| 	'INT'
 	| 	'REAL'
@@ -3905,7 +3906,7 @@ COBOL_nines ::= { '9' [ left_paren length right_paren ] }*
 COBOL_integer_type ::= COBOL_binary_integer
 
 COBOL_binary_integer ::=
-		{  'PIC' |  'PICTURE' } [  'IS' ] SCOBOL_nines [  'USAGE' [  'IS' ] ]  'BINARY'
+		{  'PIC' |  'PICTURE' } [  'IS' ] COBOL_nines [  'USAGE' [  'IS' ] ]  'BINARY'
 
 COBOL_derived_type_specification ::=
 		COBOL_CLOB_variable
