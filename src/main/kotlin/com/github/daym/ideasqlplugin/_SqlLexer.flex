@@ -399,7 +399,6 @@ BRACKET_LITERAL={UNTERMINATED_BRACKET_LITERAL} \]
   "simple_Latin_letter"                          { return SIMPLE_LATIN_LETTER; }
   "digit"                                        { return DIGIT; }
   "ADA"                                          { return ADA; }
-  "C"                                            { return C; }
   "COBOL"                                        { return COBOL; }
   "FORTRAN"                                      { return FORTRAN; }
   "MUMPS"                                        { return MUMPS; }
@@ -411,13 +410,8 @@ BRACKET_LITERAL={UNTERMINATED_BRACKET_LITERAL} \]
   "SCOPE"                                        { return SCOPE; }
   "SESSION_USER"                                 { return SESSION_USER; }
   "SYSTEM_USER"                                  { return SYSTEM_USER; }
-  "E"                                            { return E; }
   "N"                                            { return N; }
-  "B"                                            { return B; }
   "X"                                            { return X; }
-  "A"                                            { return A; }
-  "D"                                            { return D; }
-  "F"                                            { return F; }
   "SIMPLE"                                       { return SIMPLE; }
   "COUNT"                                        { return COUNT; }
   "AVG"                                          { return AVG; }

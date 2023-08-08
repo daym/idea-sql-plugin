@@ -984,12 +984,21 @@ general_literal ::=
 	|	interval_literal
 	|	boolean_literal
 
-string_literal_part ::= SINGLE_QUOTE_STRING_LITERAL // | DOUBLE_QUOTE_STRING_LITERAL
+string_literal_part ::= SINGLE_QUOTE_STRING_LITERAL // TODO: | DOUBLE_QUOTE_STRING_LITERAL
 
-character_string_literal ::=
-		[ introducer character_set_specification ]
-		string_literal_part
-		[ { separator string_literal_part }* ]
+// comment or whitespace
+separator ::=
+
+character_string_literal ::= [ introducer character_set_specification ] string_literal_part [ { separator string_literal_part }* ]
+national_character_string_literal ::= N string_literal_part [ { separator string_literal_part }* ]
+bit_string_literal ::= B string_literal_part [ { separator string_literal_part }* ]
+hex_string_literal ::= X string_literal_part [ { separator string_literal_part }* ]
+binary_string_literal ::= X string_literal_part [ { separator string_literal_part }* ]
+datetime_literal ::= date_literal | time_literal | timestamp_literal
+date_literal ::=  DATE string_literal_part
+timestamp_literal ::=  TIMESTAMP string_literal_part
+interval_literal ::=  INTERVAL [ sign_r ] interval_string interval_qualifier
+interval_string ::= string_literal_part
 
 introducer ::= underscore
 
@@ -1024,87 +1033,6 @@ bracketed_comment ::=
 //bracketed_comment_introducer bracketed_comment_contents bracketed_comment_terminator
 //bracketed_comment_contents ::= [ { comment_character | separator }* ]
 
-national_character_string_literal ::=
-		N string_literal_part
-		[ { separator string_literal_part }* ]
-
-bit_string_literal ::=
-		B quote [ bit_r* ] quote
-		[ { separator quote [ bit_r* ] quote }* ]
-
-bit_r ::= '0' | '1'
-
-hex_string_literal ::=
-		X quote [ hexit* ] quote
-		[ { separator quote [ hexit* ] quote }* ]
-
-hexit ::= digit | A | B | C | D | E | F | a | b | c | d | e | f
-
-binary_string_literal ::=
-		X quote [ { hexit hexit }* ] quote
-		[ { separator quote [ { hexit hexit }* ] quote }* ]
-
-datetime_literal ::= date_literal | time_literal | timestamp_literal
-
-date_literal ::=  DATE date_string
-
-date_string ::= quote unquoted_date_string quote
-
-unquoted_date_string ::= date_value
-
-date_value ::= years_value minus_sign months_value minus_sign days_value
-
-years_value ::= datetime_value
-
-datetime_value ::= unsigned_integer
-
-months_value ::= datetime_value
-
-days_value ::= datetime_value
-
-time_literal ::=  TIME time_string
-
-time_string ::= quote unquoted_time_string quote
-
-unquoted_time_string ::= time_value [ time_zone_interval ]
-
-time_value ::= hours_value colon minutes_value colon seconds_value
-
-hours_value ::= datetime_value
-
-minutes_value ::= datetime_value
-
-seconds_value ::= seconds_integer_value [ period [ seconds_fraction ] ]
-
-seconds_integer_value ::= unsigned_integer
-
-seconds_fraction ::= unsigned_integer
-
-time_zone_interval ::= sign_r hours_value colon minutes_value
-
-timestamp_literal ::=  TIMESTAMP timestamp_string
-
-timestamp_string ::= quote unquoted_timestamp_string quote
-
-unquoted_timestamp_string ::= unquoted_date_string space unquoted_time_string
-
-interval_literal ::=  INTERVAL [ sign_r ] interval_string interval_qualifier
-
-interval_string ::= quote unquoted_interval_string quote
-
-unquoted_interval_string ::= [ sign_r ] { year-month_literal | day-time_literal }
-
-year-month_literal ::= years_value | [ years_value minus_sign ] months_value
-
-day-time_literal ::= day-time_interval | time_interval
-
-day-time_interval ::=
-		days_value [ space hours_value [ colon minutes_value [ colon seconds_value ] ] ]
-
-time_interval ::=
-		hours_value [ colon minutes_value [ colon seconds_value ] ]
-	|	minutes_value [ colon seconds_value ]
-	|	seconds_value
 
 boolean_literal ::=  TRUE |  FALSE |  UNKNOWN
 
