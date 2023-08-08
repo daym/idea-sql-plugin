@@ -1,5 +1,6 @@
 {
   parserClass="com.github.daym.ideasqlplugin.language.parser.SqlParser"
+  parserUtilClass="com.github.daym.ideasqlplugin.language.parser.SqlParserUtil"
 
   extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
 
@@ -3062,7 +3063,7 @@ reserved_word ::=
 	|	'DESCRIBE' |  'DESCRIPTOR' |  'DETERMINISTIC'
 	|	'DIAGNOSTICS' |  'DISCONNECT' |  'DISTINCT' |  'DO' |  'DOMAIN' |  'DOUBLE'
 	|	'DROP' |  'DYNAMIC'
-	|	'EACH' |  'ELSE' |  'ELSEIF' |  'END' | END-EXEC |  'EQUALS' |  'ESCAPE' |  'EXCEPT'
+	|	'EACH' |  'ELSE' |  'ELSEIF' |  'END' | 'END_EXEC' |  'EQUALS' |  'ESCAPE' |  'EXCEPT'
 	|	'EXCEPTION' |  'EXEC' |  'EXECUTE' |  'EXISTS' |  'EXIT' |  'EXTERNAL'
 	|	'FALSE' |  'FETCH' |  'FIRST' |  'FLOAT' |  'FOR' |  'FOREIGN' |  'FOUND' |  'FROM' |  'FREE'
 	|	'FULL' |  'FUNCTION'
@@ -3693,7 +3694,8 @@ embedded_SQL_begin_declare ::=
 
 SQL_prefix ::=  'EXEC' 'SQL' | ampersand 'SQL' left_paren
 
-SQL_terminator ::= 'END-EXEC' | semicolon | right_paren
+// FIXME: It's actually END-EXEC
+SQL_terminator ::= 'END_EXEC' | semicolon | right_paren
 
 embedded_character_set_declaration ::=
 	 	'SQL'  'NAMES' 'ARE' character_set_specification
