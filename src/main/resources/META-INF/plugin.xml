@@ -19,6 +19,10 @@
                   extensions="sql"/>
         <lang.parserDefinition language="Sql"
                                implementationClass="com.github.daym.ideasqlplugin.parser.SqlParserDefinition"/>
+        <lang.syntaxHighlighterFactory
+                language="Sql"
+                implementationClass="com.github.daym.ideasqlplugin.language.SqlSyntaxHighlighterFactory"/>
+
     </extensions>
 
     <applicationListeners>
