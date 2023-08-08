@@ -1,4 +1,4 @@
-package com.github.pyltsin.monkeyplugin.lexer
+package com.github.daym.ideasqlplugin.parser
 
 import com.github.daym.ideasqlplugin._SqlLexer
 import com.intellij.lexer.FlexAdapter

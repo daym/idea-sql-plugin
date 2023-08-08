@@ -82,6 +82,9 @@ tasks {
         gradleVersion = properties("gradleVersion").get()
     }
 
+    compileJava {
+        options.forkOptions.jvmArgs?.plusAssign("-Xss3M")
+    }
     patchPluginXml {
         version = properties("pluginVersion")
         sinceBuild = properties("pluginSinceBuild")
@@ -139,4 +142,5 @@ tasks {
     }
 }
 
+//sourceSets["main"].kotlin.srcDirs("src/main/kotlin")
 sourceSets["main"].java.srcDirs("src/main/gen")
