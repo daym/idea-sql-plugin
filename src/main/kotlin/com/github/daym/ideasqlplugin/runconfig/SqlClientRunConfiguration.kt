@@ -10,10 +10,6 @@ import com.intellij.execution.runners.ExecutionEnvironment
 import com.intellij.openapi.options.SettingsEditor
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.VfsUtil
-import jdk.internal.org.jline.utils.Colors.s
-
-
-
 
 class SqlClientRunConfiguration(project: Project, sqlConfigurationFactory: SqlClientConfigurationFactory, name: String) :
     RunConfigurationBase<SqlClientRunConfigurationOptions>(project, sqlConfigurationFactory, name) {
