@@ -1,5 +1,7 @@
 import org.jetbrains.changelog.Changelog
 import org.jetbrains.changelog.markdownToHTML
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.gradle.api.JavaVersion.VERSION_17
 
 fun properties(key: String) = providers.gradleProperty(key)
 fun environment(key: String) = providers.environmentVariable(key)
@@ -13,6 +15,8 @@ java {
     }
 }
 
+//val grammarKitFakePsiDeps = "grammar-kit-fake-psi-deps"
+
 plugins {
     id("java") // Java support
     alias(libs.plugins.kotlin) // Kotlin support
@@ -20,6 +24,7 @@ plugins {
     alias(libs.plugins.changelog) // Gradle Changelog Plugin
     alias(libs.plugins.qodana) // Gradle Qodana Plugin
     alias(libs.plugins.kover) // Gradle Kover Plugin
+    id("org.jetbrains.grammarkit") version "2022.3.1"
 }
 
 group = properties("pluginGroup").get()
@@ -115,6 +120,25 @@ tasks {
                 )
             }
         }
+
+    }
+
+    generateLexer {
+        sourceFile.set(file("src/main/kotlin/com/github/daym/ideasqlplugin/_SqlLexer.flex"))
+        targetDir.set("src/gen/com/github/daym/ideasqlplugin")
+        targetClass.set("_SqlLexer")
+        purgeOldFiles.set(true)
+    }
+    generateParser {
+        sourceFile.set(file("src/main/kotlin/com/github/daym/ideasqlplugin/sql-99.bnf"))
+        targetRoot.set("src/gen")
+        pathToParser.set("com/github/daym/ideasqlplugin/language/parser/SqlParser.java")
+        pathToPsiRoot.set("com/github/daym/ideasqlplugin/language/psi")
+        purgeOldFiles.set(true)
+        //classpath(project(":$grammarKitFakePsiDeps").sourceSets.main.get().runtimeClasspath)
+    }
+    withType<KotlinCompile> {
+        dependsOn(generateLexer, generateParser)
     }
 
     // Configure UI tests plugin
@@ -143,4 +167,22 @@ tasks {
 }
 
 //sourceSets["main"].kotlin.srcDirs("src/main/kotlin")
-sourceSets["main"].java.srcDirs("src/main/gen")
+sourceSets["main"].java.srcDirs("src/gen")
+
+allprojects {
+    apply {
+        plugin("idea")
+        plugin("kotlin")
+        //plugin("org.jetbrains.grammarkit")
+        plugin("org.jetbrains.intellij")
+    }
+    idea {
+        module {
+            generatedSourceDirs.add(file("src/gen"))
+        }
+    }
+    configure<JavaPluginExtension> {
+        sourceCompatibility = VERSION_17
+        targetCompatibility = VERSION_17
+    }
+}
