@@ -45,7 +45,6 @@ class ProjectSettingsComponent {
         myMainPanel = FormBuilder.createFormBuilder()
             .addLabeledComponent(JBLabel("SQL Client type: "), mySqlClientType, 1, false)
             .addLabeledComponent(JBLabel("SQL Client executable: "), mySqlClientExecutable, 1, false)
-            .addLabeledComponent(JBLabel("Host to connect to: "), myTargetHost, 1, false)
             .panel
     }
 
@@ -53,12 +52,6 @@ class ProjectSettingsComponent {
         get() = mySqlClientExecutable.text
         set(value) {
             mySqlClientExecutable.text = value
-        }
-
-    var targetHostText: String
-        get() = myTargetHost.text
-        set(value) {
-            myTargetHost.text = value
         }
 
     var sqlClientTypeText: String

@@ -25,7 +25,6 @@ class ProjectSettingsConfigurable : Configurable {
         var modified = false
         modified = modified or (mySettingsComponent!!.sqlClientTypeText != settings.sqlClientType)
         modified = modified or (mySettingsComponent!!.sqlClientExecutableNameText != settings.sqlClientExecutableName)
-        modified = modified or (mySettingsComponent!!.targetHostText != settings.targetHostName)
         //        modified |= mySettingsComponent.getIdeaUserStatus() != settings.ideaStatus;
         return modified
     }
@@ -34,14 +33,12 @@ class ProjectSettingsConfigurable : Configurable {
         val settings: ProjectSettingsState = ProjectSettingsState.instance
         settings.sqlClientType = mySettingsComponent!!.sqlClientTypeText
         settings.sqlClientExecutableName = mySettingsComponent!!.sqlClientExecutableNameText
-        settings.targetHostName = mySettingsComponent!!.targetHostText
     }
 
     override fun reset() {
         val settings: ProjectSettingsState = ProjectSettingsState.instance
         mySettingsComponent!!.sqlClientTypeText = settings.sqlClientType
         mySettingsComponent!!.sqlClientExecutableNameText = settings.sqlClientExecutableName
-        mySettingsComponent!!.targetHostText = settings.targetHostName
     }
 
     override fun disposeUIResources() {

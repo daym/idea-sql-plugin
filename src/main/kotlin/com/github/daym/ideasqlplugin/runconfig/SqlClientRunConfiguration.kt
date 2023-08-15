@@ -3,6 +3,7 @@ package com.github.daym.ideasqlplugin.runconfig
 import com.github.daym.ideasqlplugin.settings.ProjectSettingsState
 import com.intellij.execution.Executor
 import com.intellij.execution.configurations.*
+import com.intellij.execution.impl.RunnerAndConfigurationSettingsImpl
 import com.intellij.execution.process.ProcessHandler
 import com.intellij.execution.process.ProcessHandlerFactory
 import com.intellij.execution.process.ProcessTerminatedListener
@@ -12,7 +13,7 @@ import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.VfsUtil
 
 class SqlClientRunConfiguration(project: Project, sqlConfigurationFactory: SqlClientConfigurationFactory, name: String) :
-    RunConfigurationBase<SqlClientRunConfigurationOptions>(project, sqlConfigurationFactory, name) {
+    LocatableConfigurationBase<SqlClientRunConfigurationOptions>(project, sqlConfigurationFactory, name) {
     override fun getState(executor: Executor, environment: ExecutionEnvironment): RunProfileState {
         return object : CommandLineState(environment) {
             //@Throws(ExecutionException::class)
@@ -23,7 +24,13 @@ class SqlClientRunConfiguration(project: Project, sqlConfigurationFactory: SqlCl
                 val baseDir = project.baseDir
                 // VfsUtil.loadText(VirtualFile file) -> String
                 // VfsUtil.iterateChildrenRecursively(VirtualFile(base), null)
-                val files = VfsUtil.collectChildrenRecursively(baseDir).filter { f -> f.extension == "sql" }
+
+                val runnerAndConfigurationSettings = environment.runnerAndConfigurationSettings
+                // FIXME this is awful.
+                val currentFilePath = (runnerAndConfigurationSettings as? RunnerAndConfigurationSettingsImpl)?.filePathIfRunningCurrentFile
+
+                val files =
+                    arrayOf(currentFilePath!!) // ListVfsUtil.collectChildrenRecursively(baseDir).filter { f -> f.extension == "sql" }
                 println(files)
 
                 val args = if (ProjectSettingsState.instance.sqlClientType == "postgres") {
@@ -33,7 +40,7 @@ class SqlClientRunConfiguration(project: Project, sqlConfigurationFactory: SqlCl
                     // TODO: --html --expanded --quiet --single-step
                     for (file in files) {
                         args.add("-f")
-                        args.add(file.path)
+                        args.add(file) // .path)
                     }
                     args
                 } else {
@@ -57,7 +64,7 @@ class SqlClientRunConfiguration(project: Project, sqlConfigurationFactory: SqlCl
                     // FIXME: I think isql cannot do more than one file at once
                     for (file in files) {
                         args.add("-i")
-                        args.add(file.path)
+                        args.add(file)
                     }
                     args
                 }
@@ -82,6 +89,18 @@ class SqlClientRunConfiguration(project: Project, sqlConfigurationFactory: SqlCl
 
     fun setUserName(value: String) {
         options.setUserName(value)
+    }
+
+    fun setHostName(text: String) {
+        options.setHostName(text)
+    }
+
+    fun getUserName(): String {
+        return options.getUserName().orEmpty() // FIXME
+    }
+
+    fun getHostName(): String {
+        return options.getHostName().orEmpty() // FIXME
     }
 
 }

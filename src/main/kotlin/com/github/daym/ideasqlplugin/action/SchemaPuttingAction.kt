@@ -1,9 +1,10 @@
 package com.github.daym.ideasqlplugin.action
 
-import com.intellij.openapi.actionSystem.ActionUpdateThread
-import com.intellij.openapi.actionSystem.AnAction
-import com.intellij.openapi.actionSystem.AnActionEvent
-import com.intellij.openapi.actionSystem.CommonDataKeys
+import com.intellij.execution.ExecutionTargetManager
+import com.intellij.execution.actions.ConfigurationContext
+import com.intellij.execution.actions.ConfigurationFromContext
+import com.intellij.execution.configurations.RunConfiguration
+import com.intellij.openapi.actionSystem.*
 import com.intellij.openapi.application.ReadAction
 import com.intellij.openapi.editor.Document
 import com.intellij.openapi.editor.Editor
@@ -18,9 +19,33 @@ import com.intellij.util.containers.ContainerUtil
 import com.intellij.util.containers.toArray
 import java.io.IOException
 
+
 class SchemaPuttingAction: AnAction() {
     private val FILE_WITH_CONTENT: Condition<VirtualFile> =
         Condition<VirtualFile> { f -> f != null && !f.fileType.isBinary }
+    private fun isEnabledFor(configuration: RunConfiguration?): Boolean {
+        return true
+    }
+
+    private fun getConfigurationsFromContext(context: ConfigurationContext): List<ConfigurationFromContext> {
+        val fromContext = context.configurationsFromContext ?: return emptyList()
+        val enabledConfigurations: MutableList<ConfigurationFromContext> = ArrayList()
+        for (configurationFromContext in fromContext) {
+            if (isEnabledFor(configurationFromContext.configuration)) {
+                enabledConfigurations.add(configurationFromContext)
+            }
+        }
+        return enabledConfigurations
+    }
+    fun canBePerformed(dataContext: DataContext?): Boolean {
+        val context = ConfigurationContext.getFromContext(dataContext)
+        val existing = context.findExisting()
+        if (existing == null) {
+            val fromContext = getConfigurationsFromContext(context)
+            return fromContext.size <= 1
+        }
+        return true
+    }
 
     private fun filterFilesWithContent(files: Array<VirtualFile>?): Array<VirtualFile?>? {
         return if (files == null) null else ContainerUtil.filter(files, FILE_WITH_CONTENT)
@@ -46,6 +71,18 @@ class SchemaPuttingAction: AnAction() {
             return
         }
         e.presentation.isEnabledAndVisible = true
+        // initRunToolbarExecutorActions
+        // Setting: executor.actions.submenu
+        //platform/execution-impl/src/com/intellij/execution/ExecutorRegistryImpl.java can also run single files
+        //if (RunConfigurationsComboBoxAction.hasRunCurrentFileItem(project)) {
+          //val status = getRunCurrentFileActionStatus(e, false);
+          //enabled = status.myEnabled;
+          //text = status.myTooltip;
+          //presentation.setIcon(status.myIcon);
+        //}
+        val target = ExecutionTargetManager.getActiveTarget(project)
+
+        e.presentation.text = "QUUX "
     }
 
     private fun getContentFromEditor(editor: Editor): String? {
@@ -165,7 +202,7 @@ class SchemaPuttingAction: AnAction() {
             project,
             editor,
             if (FILE_WITH_CONTENT.value(file)) file else null,
-            filterFilesWithContent(files)
+            filterFilesWithContent(files),
         )
 
         // FIXME: putSchemaAction(fileContents) that creates and reuses a Run Configuration ?
@@ -173,5 +210,9 @@ class SchemaPuttingAction: AnAction() {
 
     override fun getActionUpdateThread(): ActionUpdateThread {
         return ActionUpdateThread.OLD_EDT
+    }
+
+    override fun displayTextInToolbar(): Boolean {
+        return true
     }
 }

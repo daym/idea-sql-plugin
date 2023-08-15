@@ -14,7 +14,6 @@ import com.intellij.util.xmlb.XmlSerializerUtil
 class ProjectSettingsState : PersistentStateComponent<ProjectSettingsState?> {
     var sqlClientType = "sybase-ase"
     var sqlClientExecutableName = "isql"
-    var targetHostName = "localhost"
 
     override fun getState(): ProjectSettingsState {
         return this

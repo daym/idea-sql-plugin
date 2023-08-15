@@ -9,24 +9,29 @@ import javax.swing.JPanel
 
 class SqlClientSettingsEditor() : SettingsEditor<SqlClientRunConfiguration>() {
     private var myPanel: JPanel
-    private var scriptPathField: TextFieldWithBrowseButton = TextFieldWithBrowseButton()
+    private var usernameField: TextFieldWithBrowseButton = TextFieldWithBrowseButton()
+    private var targetHostNameField: TextFieldWithBrowseButton = TextFieldWithBrowseButton()
 
     init {
-        scriptPathField.addBrowseFolderListener(
-            "Select Script File", null, null,
-            FileChooserDescriptorFactory.createSingleFileDescriptor()
-        )
+//        scriptPathField.addBrowseFolderListener(
+//            "Select Script File", null, null,
+//            FileChooserDescriptorFactory.createSingleFileDescriptor()
+//        )
         myPanel = FormBuilder.createFormBuilder()
-            .addLabeledComponent("Script file", scriptPathField)
+            .addLabeledComponent("Target host", targetHostNameField)
+            .addLabeledComponent("User", usernameField)
             .panel
     }
 
     override fun resetEditorFrom(config: SqlClientRunConfiguration) {
+        targetHostNameField.text = config.getHostName();
+        usernameField.text = config.getUserName();
         // FIXME TODO("Not yet implemented")
     }
 
     override fun applyEditorTo(config: SqlClientRunConfiguration) {
-        config.setUserName(scriptPathField.text)
+        config.setHostName(targetHostNameField.text)
+        config.setUserName(usernameField.text)
     }
 
     override fun createEditor(): JComponent {

@@ -31,6 +31,8 @@
                 instance="com.github.daym.ideasqlplugin.settings.ProjectSettingsConfigurable"
                 displayName="Sql"
         />
+        <runConfigurationProducer implementation="com.github.daym.ideasqlplugin.runconfig.SqlClientRunConfigurationProducer"/>
+
         <applicationService
                 serviceImplementation="com.github.daym.ideasqlplugin.settings.ProjectSettingsState"/>
 
