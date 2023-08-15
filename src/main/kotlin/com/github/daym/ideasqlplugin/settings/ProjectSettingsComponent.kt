@@ -34,10 +34,12 @@ class ProjectSettingsComponent {
             FileChooserDescriptor(false, true, false, false, false, false)
         ) */
 
-        mySqlClientType = ComboBox(arrayOf("sybase-ase", "postgres", "mssql"))
+        mySqlClientType = ComboBox(arrayOf("sybase-ase", "postgres", "mssql", "sybase-ase or mssql via freetds"))
         mySqlClientType.addActionListener {
             mySqlClientExecutable.text = if ((mySqlClientType.selectedItem as String) == "postgres") {
                 "psql"
+            } else if ((mySqlClientType.selectedItem as String) == "sybase-ase or mssql via freetds") {
+                "fisql"
             } else {
                 "isql"
             }

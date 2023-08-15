@@ -44,7 +44,6 @@ class SqlClientRunConfiguration(project: Project, sqlConfigurationFactory: SqlCl
                     }
                     args
                 } else {
-                    // TODO: also "-a utf-8"
                     // TODO: -R remote_server_principal
                     // TODO: -V security option
                     // TODO: -Z security mechanism
@@ -55,12 +54,17 @@ class SqlClientRunConfiguration(project: Project, sqlConfigurationFactory: SqlCl
                     // TODO: -F FIPS flagger
                     // TODO: -E editor
                     val args = mutableListOf(ProjectSettingsState.instance.sqlClientExecutableName,
-                        "-J", "utf-8",
                         "-w", "2000",
-                        "-S",
-                        "-s", "|",
-                        "--retserverror",
-                        options.getHostName(), "-U", options.getUserName(), "-w")
+                        "-S", options.getHostName(),
+                        "-U", options.getUserName(),
+                        "-s", "|")
+                    if (ProjectSettingsState.instance.sqlClientType.indexOf("freetds") == -1) {
+                        args.add("--retserverror")
+                        args.add("-J");
+                        args.add("utf-8");
+                        // TODO: also "-a utf-8"
+                    }
+
                     // FIXME: I think isql cannot do more than one file at once
                     for (file in files) {
                         args.add("-i")
